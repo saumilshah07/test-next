@@ -1,19 +1,11 @@
 {
   "compilerOptions": {
-    "strict": false,
-    "noEmit": true,
-    "allowJs": true,
-    "jsx": "react",
+    "strict": true,
     "module": "esnext",
-    "skipLibCheck": true,
+    "target": "ES2017",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "next-test-utils": ["test/lib/next-test-utils"],
-      "amp-test-utils": ["test/lib/amp-test-utils"],
-      "next-webdriver": ["test/lib/next-webdriver"]
-    }
+    "jsx": "react"
   },
-  "include": ["test/**/*.test.ts", "test/**/*.test.tsx", "test/**/test/*"]
+  "exclude": ["dist", "./*.d.ts"]
 }
