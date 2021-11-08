@@ -355,6 +355,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 }
                 // Begin Squoosh transformation logic
                 const orientation = await (0, _getOrientation).getOrientation(upstreamBuffer);
+                console.log('image optimizer orientation', orientation);
                 const operations = [];
                 if (orientation === _getOrientation.Orientation.RIGHT_TOP) {
                     operations.push({
@@ -382,6 +383,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 });
                 //if (contentType === AVIF) {
                 //} else
+                console.log('image optimizer contentType', contentType);
                 if (contentType === WEBP) {
                     optimizedBuffer = await (0, _main).processBuffer(upstreamBuffer, operations, 'webp', quality);
                 } else if (contentType === PNG) {
