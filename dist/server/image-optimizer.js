@@ -404,7 +404,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 console.log('image optimizer optimizedBuffer expireAt', expireAt);
                 console.log('image optimizer optimizedBuffer req', req);
                 console.log('image optimizer optimizedBuffer res', res);
-                // await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
+                await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
                 sendResponse(req, res, url, maxAge, contentType, optimizedBuffer, isStatic, isDev);
             } else {
                 throw new Error('Unable to optimize buffer');
@@ -431,6 +431,7 @@ async function writeToCacheDir(dir, contentType, maxAge, expireAt, buffer) {
         buffer
     ]);
     const filename = (0, _path).join(dir, `${maxAge}.${expireAt}.${etag}.${extension}`);
+    console.log('writeToCacheDir filename', filename);
     await _fs.promises.writeFile(filename, buffer);
 }
 function getFileNameWithExtension(url, contentType) {
@@ -445,7 +446,7 @@ function getFileNameWithExtension(url, contentType) {
 }
 function setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, isDev) {
     res.setHeader('Vary', 'Accept');
-    res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : 0}, must-revalidate`);
+    res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : maxAge}, must-revalidate`);
     if ((0, _sendPayload).sendEtagResponse(req, res, etag)) {
         // already called res.end() so we're finished
         return {
@@ -471,6 +472,8 @@ function sendResponse(req, res, url, maxAge, contentType, buffer, isStatic, isDe
     const etag = getHash([
         buffer
     ]);
+    console.log('sendResponse etag', etag);
+
     const result = setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, isDev);
     if (!result.finished) {
         res.end(buffer);
