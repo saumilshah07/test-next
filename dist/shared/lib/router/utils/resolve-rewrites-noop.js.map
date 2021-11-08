@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../shared/lib/router/utils/resolve-rewrites-noop.ts"],"sourcesContent":["export default function resolveRewrites() {}\n"],"names":["resolveRewrites"],"mappings":";;;;kBAAwBA,eAAe;SAAfA,eAAe,GAAG,CAAC;AAAA,CAAC"}

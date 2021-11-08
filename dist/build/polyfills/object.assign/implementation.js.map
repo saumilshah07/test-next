@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../build/polyfills/object.assign/implementation.js"],"sourcesContent":["module.exports = Object.assign\n"],"names":["module","exports","Object","assign"],"mappings":";AAAAA,MAAM,CAACC,OAAO,GAAGC,MAAM,CAACC,MAAM"}
