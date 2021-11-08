@@ -64,6 +64,9 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
     }
     const { headers  } = req;
     const { url , w , q  } = parsedUrl.query;
+    console.log('image optimizer url', url);
+    console.log('image optimizer w', w);
+    console.log('image optimizer q', q);
     const mimeType = getSupportedMimeType(MODERN_TYPES, headers.accept);
     let href;
     if (!url) {
