@@ -397,12 +397,20 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 console.log('image optimizer optimizedBuffer optimizedBuffer', optimizedBuffer);
             }
             if (optimizedBuffer) {
-                await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
+                console.log('image optimizer optimizedBuffer hashDir', hashDir);
+                console.log('image optimizer optimizedBuffer isStatic', isStatic);
+                console.log('image optimizer optimizedBuffer isDev', isDev);
+                console.log('image optimizer optimizedBuffer maxAge', maxAge);
+                console.log('image optimizer optimizedBuffer expireAt', expireAt);
+                console.log('image optimizer optimizedBuffer req', req);
+                console.log('image optimizer optimizedBuffer res', res);
+                // await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
                 sendResponse(req, res, url, maxAge, contentType, optimizedBuffer, isStatic, isDev);
             } else {
                 throw new Error('Unable to optimize buffer');
             }
         } catch (error) {
+            console.log('image optimizer error', error);
             sendResponse(req, res, url, maxAge, upstreamType, upstreamBuffer, isStatic, isDev);
         }
         return {
@@ -437,7 +445,7 @@ function getFileNameWithExtension(url, contentType) {
 }
 function setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, isDev) {
     res.setHeader('Vary', 'Accept');
-    res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : maxAge}, must-revalidate`);
+    res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : 0}, must-revalidate`);
     if ((0, _sendPayload).sendEtagResponse(req, res, etag)) {
         // already called res.end() so we're finished
         return {
@@ -445,9 +453,12 @@ function setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, 
         };
     }
     if (contentType) {
+        console.log('setResponseHeaders contentType', contentType);
         res.setHeader('Content-Type', contentType);
     }
+    console.log('setResponseHeaders url', url);
     const fileName = getFileNameWithExtension(url, contentType);
+    console.log('setResponseHeaders fileName', fileName);
     if (fileName) {
         res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
     }
