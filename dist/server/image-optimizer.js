@@ -68,6 +68,8 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
     console.log('image optimizer w', w);
     console.log('image optimizer q', q);
     const mimeType = getSupportedMimeType(MODERN_TYPES, headers.accept);
+    console.log('image optimizer headers.accept', headers.accept);
+    console.log('image optimizer mimeType', mimeType);
     let href;
     if (!url) {
         res.statusCode = 400;
@@ -388,6 +390,9 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                     optimizedBuffer = await (0, _main).processBuffer(upstreamBuffer, operations, 'jpeg', quality);
                 }
             // End Squoosh transformation logic
+                console.log('image optimizer optimizedBuffer url', url);
+                console.log('image optimizer optimizedBuffer res', res);
+                console.log('image optimizer optimizedBuffer optimizedBuffer', optimizedBuffer);
             }
             if (optimizedBuffer) {
                 await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
