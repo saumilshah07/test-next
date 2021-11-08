@@ -45,8 +45,8 @@ const getServerImpl = async ()=>{
     return ServerImpl;
 };
 class NextServer {
-    constructor(options2){
-        this.options = options2;
+    constructor(options1){
+        this.options = options1;
     }
     getRequestHandler() {
         return async (req, res, parsedUrl)=>{
@@ -66,29 +66,29 @@ class NextServer {
             this.server.logError(...args);
         }
     }
-    async render(...args1) {
+    async render(...args) {
         const server = await this.getServer();
-        return server.render(...args1);
+        return server.render(...args);
     }
-    async renderToHTML(...args2) {
+    async renderToHTML(...args) {
         const server = await this.getServer();
-        return server.renderToHTML(...args2);
+        return server.renderToHTML(...args);
     }
-    async renderError(...args3) {
+    async renderError(...args) {
         const server = await this.getServer();
-        return server.renderError(...args3);
+        return server.renderError(...args);
     }
-    async renderErrorToHTML(...args4) {
+    async renderErrorToHTML(...args) {
         const server = await this.getServer();
-        return server.renderErrorToHTML(...args4);
+        return server.renderErrorToHTML(...args);
     }
-    async render404(...args5) {
+    async render404(...args) {
         const server = await this.getServer();
-        return server.render404(...args5);
+        return server.render404(...args);
     }
-    async serveStatic(...args6) {
+    async serveStatic(...args) {
         const server = await this.getServer();
-        return server.serveStatic(...args6);
+        return server.serveStatic(...args);
     }
     async prepare() {
         const server = await this.getServer();
@@ -98,13 +98,13 @@ class NextServer {
         const server = await this.getServer();
         return server.close();
     }
-    async createServer(options1) {
-        if (options1.dev) {
+    async createServer(options) {
+        if (options.dev) {
             const DevServer = require('./dev/next-dev-server').default;
-            return new DevServer(options1);
+            return new DevServer(options);
         }
         const ServerImplementation = await getServerImpl();
-        return new ServerImplementation(options1);
+        return new ServerImplementation(options);
     }
     async loadConfig() {
         const phase = this.options.dev ? _constants1.PHASE_DEVELOPMENT_SERVER : _constants1.PHASE_PRODUCTION_SERVER;
@@ -139,24 +139,24 @@ class NextServer {
 }
 exports.NextServer = NextServer;
 // This file is used for when users run `require('next')`
-function createServer(options) {
+function createServer(options2) {
     const standardEnv = [
         'production',
         'development',
         'test'
     ];
-    if (options == null) {
+    if (options2 == null) {
         throw new Error('The server has not been instantiated properly. https://nextjs.org/docs/messages/invalid-server-options');
     }
-    if (!options.isNextDevCommand && process.env.NODE_ENV && !standardEnv.includes(process.env.NODE_ENV)) {
+    if (!options2.isNextDevCommand && process.env.NODE_ENV && !standardEnv.includes(process.env.NODE_ENV)) {
         log.warn(_constants.NON_STANDARD_NODE_ENV);
     }
-    if (options.dev) {
-        if (typeof options.dev !== 'boolean') {
+    if (options2.dev) {
+        if (typeof options2.dev !== 'boolean') {
             console.warn("Warning: 'dev' is not a boolean which could introduce unexpected behavior. https://nextjs.org/docs/messages/invalid-server-options");
         }
     }
-    return new NextServer(options);
+    return new NextServer(options2);
 }
 // Support commonjs `require('next')`
 module.exports = createServer;

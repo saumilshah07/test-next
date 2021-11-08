@@ -27,18 +27,18 @@ async function transform(src, options) {
     return bindings.transform(isModule ? JSON.stringify(src) : src, isModule, toBuffer(newOptions));
 }
 function transformSync(src, options) {
-    var ref;
+    var ref2;
     const isModule = typeof src !== 'string';
     options = options || {
     };
-    if (options === null || options === void 0 ? void 0 : (ref = options.jsc) === null || ref === void 0 ? void 0 : ref.parser) {
+    if (options === null || options === void 0 ? void 0 : (ref2 = options.jsc) === null || ref2 === void 0 ? void 0 : ref2.parser) {
         var _syntax;
         options.jsc.parser.syntax = (_syntax = options.jsc.parser.syntax) !== null && _syntax !== void 0 ? _syntax : 'ecmascript';
     }
     const { plugin , ...newOptions } = options;
     if (plugin) {
-        var ref2;
-        const m = typeof src === 'string' ? this.parseSync(src, options === null || options === void 0 ? void 0 : (ref2 = options.jsc) === null || ref2 === void 0 ? void 0 : ref2.parser) : src;
+        var ref3;
+        const m = typeof src === 'string' ? this.parseSync(src, options === null || options === void 0 ? void 0 : (ref3 = options.jsc) === null || ref3 === void 0 ? void 0 : ref3.parser) : src;
         return this.transformSync(plugin(m), newOptions);
     }
     return bindings.transformSync(isModule ? JSON.stringify(src) : src, isModule, toBuffer(newOptions));

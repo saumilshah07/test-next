@@ -53,7 +53,7 @@ const TELEMETRY_KEY_ID = `telemetry.anonymousId`;
 // See the `oneWayHash` function.
 const TELEMETRY_KEY_SALT = `telemetry.salt`;
 class Telemetry {
-    constructor({ distDir: distDir1  }){
+    constructor({ distDir  }){
         this.notify = ()=>{
             if (this.isDisabled || !this.conf) {
                 return;
@@ -162,7 +162,7 @@ class Telemetry {
         const { NEXT_TELEMETRY_DISABLED , NEXT_TELEMETRY_DEBUG  } = process.env;
         this.NEXT_TELEMETRY_DISABLED = NEXT_TELEMETRY_DISABLED;
         this.NEXT_TELEMETRY_DEBUG = NEXT_TELEMETRY_DEBUG;
-        const storageDirectory = getStorageDirectory(distDir1);
+        const storageDirectory = getStorageDirectory(distDir);
         try {
             // `conf` incorrectly throws a permission error during initialization
             // instead of waiting for first use. We need to handle it, otherwise the
@@ -211,10 +211,10 @@ class Telemetry {
     }
 }
 exports.Telemetry = Telemetry;
-function getStorageDirectory(distDir) {
+function getStorageDirectory(distDir1) {
     const isLikelyEphemeral = ciEnvironment.isCI || (0, _isDocker).default();
     if (isLikelyEphemeral) {
-        return _path.default.join(distDir, 'cache');
+        return _path.default.join(distDir1, 'cache');
     }
     return undefined;
 }

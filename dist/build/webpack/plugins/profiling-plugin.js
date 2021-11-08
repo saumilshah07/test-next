@@ -24,11 +24,11 @@ class ProfilingPlugin {
         this.traceCompilationHooks(compiler);
         this.compiler = compiler;
     }
-    traceHookPair(spanName1, startHook, stopHook, { parentSpan , attrs , onSetSpan  } = {
+    traceHookPair(spanName, startHook, stopHook, { parentSpan , attrs , onSetSpan  } = {
     }) {
         let span;
         startHook.tap(pluginName, ()=>{
-            span = parentSpan ? parentSpan().traceChild(spanName1, attrs ? attrs() : attrs) : (0, _trace).trace(spanName1, undefined, attrs ? attrs() : attrs);
+            span = parentSpan ? parentSpan().traceChild(spanName, attrs ? attrs() : attrs) : (0, _trace).trace(spanName, undefined, attrs ? attrs() : attrs);
             onSetSpan === null || onSetSpan === void 0 ? void 0 : onSetSpan(span);
         });
         stopHook.tap(pluginName, ()=>{
@@ -41,32 +41,32 @@ class ProfilingPlugin {
             span.stop();
         });
     }
-    traceTopLevelHooks(compiler1) {
-        this.traceHookPair('webpack-compilation', _webpack.isWebpack5 ? compiler1.hooks.beforeCompile : compiler1.hooks.compile, _webpack.isWebpack5 ? compiler1.hooks.afterCompile : compiler1.hooks.done, {
+    traceTopLevelHooks(compiler) {
+        this.traceHookPair('webpack-compilation', _webpack.isWebpack5 ? compiler.hooks.beforeCompile : compiler.hooks.compile, _webpack.isWebpack5 ? compiler.hooks.afterCompile : compiler.hooks.done, {
             parentSpan: ()=>this.runWebpackSpan
             ,
             attrs: ()=>({
-                    name: compiler1.name
+                    name: compiler.name
                 })
             ,
-            onSetSpan: (span)=>spans.set(compiler1, span)
+            onSetSpan: (span)=>spans.set(compiler, span)
         });
-        if (compiler1.options.mode === 'development') {
-            this.traceHookPair('webpack-invalidated', compiler1.hooks.invalid, compiler1.hooks.done, {
+        if (compiler.options.mode === 'development') {
+            this.traceHookPair('webpack-invalidated', compiler.hooks.invalid, compiler.hooks.done, {
                 attrs: ()=>({
-                        name: compiler1.name
+                        name: compiler.name
                     })
             });
         }
     }
-    traceCompilationHooks(compiler2) {
-        this.traceHookPair('webpack-emit', compiler2.hooks.emit, compiler2.hooks.afterEmit, {
+    traceCompilationHooks(compiler) {
+        this.traceHookPair('webpack-emit', compiler.hooks.emit, compiler.hooks.afterEmit, {
             parentSpan: ()=>this.runWebpackSpan
         });
-        compiler2.hooks.compilation.tap(pluginName, (compilation)=>{
+        compiler.hooks.compilation.tap(pluginName, (compilation)=>{
             compilation.hooks.buildModule.tap(pluginName, (module)=>{
                 var ref;
-                const compilerSpan = spans.get(compiler2);
+                const compilerSpan = spans.get(compiler);
                 if (!compilerSpan) {
                     return;
                 }

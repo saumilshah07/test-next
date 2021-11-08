@@ -20,30 +20,30 @@ class CssMinimizerPlugin {
         this.__next_css_remove = true;
         this.options = options;
     }
-    optimizeAsset(file1, asset1) {
+    optimizeAsset(file, asset) {
         const postcssOptions = {
             ...this.options.postcssOptions,
-            to: file1,
-            from: file1,
+            to: file,
+            from: file,
             // We don't actually add this parser to support Sass. It can also be used
             // for inline comment support. See the README:
             // https://github.com/postcss/postcss-scss/blob/master/README.md#2-inline-comments-for-postcss
             parser: _postcssScss.default
         };
         let input;
-        if (postcssOptions.map && asset1.sourceAndMap) {
-            const { source , map  } = asset1.sourceAndMap();
+        if (postcssOptions.map && asset.sourceAndMap) {
+            const { source , map  } = asset.sourceAndMap();
             input = source;
             postcssOptions.map.prev = map ? map : false;
         } else {
-            input = asset1.source();
+            input = asset.source();
         }
         return (0, _postcss).default([
             (0, _cssnanoSimple).default({
             }, _postcss.default)
         ]).process(input, postcssOptions).then((res)=>{
             if (res.map) {
-                return new _webpack.sources.SourceMapSource(res.css, file1, res.map.toJSON());
+                return new _webpack.sources.SourceMapSource(res.css, file, res.map.toJSON());
             } else {
                 return new _webpack.sources.RawSource(res.css);
             }

@@ -4,13 +4,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _textDecoder = require("../text-decoder");
-var Module1 = function() {
+var Module = function() {
     // var _scriptDir = import.meta.url
-    return function(Module) {
-        Module = Module || {
+    return function(Module1) {
+        Module1 = Module1 || {
         };
         var f;
-        f || (f = typeof Module !== 'undefined' ? Module : {
+        f || (f = typeof Module1 !== 'undefined' ? Module1 : {
         });
         var aa, ba;
         f.ready = new Promise(function(a, b) {
@@ -978,8 +978,8 @@ var Module1 = function() {
             f.monitorRunDependencies && f.monitorRunDependencies(K);
             if (f.instantiateWasm) try {
                 return f.instantiateWasm(d, a);
-            } catch (e1) {
-                return v('Module.instantiateWasm callback failed with error: ' + e1), !1;
+            } catch (e) {
+                return v('Module.instantiateWasm callback failed with error: ' + e), !1;
             }
             (function() {
                 return w || 'function' !== typeof WebAssembly.instantiateStreaming || Ha() || 'function' !== typeof fetch ? c(b) : fetch(M, {
@@ -1055,10 +1055,10 @@ var Module1 = function() {
         ]); 0 < f.preInit.length;)f.preInit.pop()();
         noExitRuntime = !0;
         wb();
-        return Module.ready;
+        return Module1.ready;
     };
 }();
-var _default = Module1;
+var _default = Module;
 exports.default = _default;
 
 //# sourceMappingURL=mozjpeg_node_enc.js.map

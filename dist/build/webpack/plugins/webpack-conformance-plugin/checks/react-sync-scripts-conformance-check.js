@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ErrorDescription = exports.WarningMessage = exports.ErrorMessage = void 0;
+exports.ErrorMessage = exports.ErrorDescription = exports.WarningMessage = void 0;
 var _testInterface = require("../TestInterface");
 var _constants = require("../constants");
 var _fileUtils = require("../utils/file-utils");

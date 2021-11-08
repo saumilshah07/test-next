@@ -21,7 +21,7 @@ function write(cacheDirectory, etag, data) {
     return (0, _trace).trace('write-cache-file').traceAsyncFn(()=>_cacache.default.put(cacheDirectory, etag, JSON.stringify(data))
     );
 }
-const etag1 = function(source, identifier, options) {
+const etag = function(source, identifier, options) {
     return (0, _trace).trace('etag').traceFn(()=>{
         const hash = (0, _crypto).createHash('md4');
         const contents = JSON.stringify({
@@ -38,7 +38,7 @@ async function handleCache(params) {
     return span.traceAsyncFn(async ()=>{
         const { source , options ={
         } , cacheIdentifier , cacheDirectory  } = params;
-        const file = etag1(source, cacheIdentifier);
+        const file = etag(source, cacheIdentifier);
         try {
             // No errors mean that the file was previously cached
             // we just need to return it

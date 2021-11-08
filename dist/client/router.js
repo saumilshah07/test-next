@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "Router", {
     enumerable: true,
     get: function() {
-        return _router1.default;
+        return _router.default;
     }
 });
 Object.defineProperty(exports, "withRouter", {
@@ -19,7 +19,7 @@ exports.createRouter = createRouter;
 exports.makePublicRouterInstance = makePublicRouterInstance;
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
-var _router1 = _interopRequireDefault(require("../shared/lib/router/router"));
+var _router = _interopRequireDefault(require("../shared/lib/router/router"));
 var _routerContext = require("../shared/lib/router-context");
 var _withRouter = _interopRequireDefault(require("./with-router"));
 function _interopRequireDefault(obj) {
@@ -73,7 +73,7 @@ const coreMethodFields = [
 // Events is a static property on the router, the router doesn't have to be initialized to use it
 Object.defineProperty(singletonRouter, 'events', {
     get () {
-        return _router1.default.events;
+        return _router.default.events;
     }
 });
 urlPropertyFields.forEach((field)=>{
@@ -96,7 +96,7 @@ coreMethodFields.forEach((field)=>{
 });
 routerEvents.forEach((event)=>{
     singletonRouter.ready(()=>{
-        _router1.default.events.on(event, (...args)=>{
+        _router.default.events.on(event, (...args)=>{
             const eventField = `on${event.charAt(0).toUpperCase()}${event.substring(1)}`;
             const _singletonRouter = singletonRouter;
             if (_singletonRouter[eventField]) {
@@ -123,30 +123,30 @@ function useRouter() {
     return _react.default.useContext(_routerContext.RouterContext);
 }
 function createRouter(...args) {
-    singletonRouter.router = new _router1.default(...args);
+    singletonRouter.router = new _router.default(...args);
     singletonRouter.readyCallbacks.forEach((cb)=>cb()
     );
     singletonRouter.readyCallbacks = [];
     return singletonRouter.router;
 }
 function makePublicRouterInstance(router) {
-    const _router = router;
+    const _router1 = router;
     const instance = {
     };
     for (const property of urlPropertyFields){
-        if (typeof _router[property] === 'object') {
-            instance[property] = Object.assign(Array.isArray(_router[property]) ? [] : {
-            }, _router[property]) // makes sure query is not stateful
+        if (typeof _router1[property] === 'object') {
+            instance[property] = Object.assign(Array.isArray(_router1[property]) ? [] : {
+            }, _router1[property]) // makes sure query is not stateful
             ;
             continue;
         }
-        instance[property] = _router[property];
+        instance[property] = _router1[property];
     }
     // Events is a static property on the router, the router doesn't have to be initialized to use it
-    instance.events = _router1.default.events;
+    instance.events = _router.default.events;
     coreMethodFields.forEach((field)=>{
         instance[field] = (...args)=>{
-            return _router[field](...args);
+            return _router1[field](...args);
         };
     });
     return instance;

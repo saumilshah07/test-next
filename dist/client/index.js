@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.initNext = initNext;
 exports.render = render;
 exports.renderError = renderError;
-exports.emitter = exports.router = exports.version = void 0;
+exports.emitter = exports.version = exports.router = void 0;
 require("@next/polyfill-module");
 var _react = _interopRequireDefault(require("react"));
 var _reactDom = _interopRequireDefault(require("react-dom"));
@@ -187,8 +187,8 @@ headManager.getIsSsr = ()=>{
     return router.isSsr;
 };
 class Container extends _react.default.Component {
-    componentDidCatch(componentErr, info1) {
-        this.props.fn(componentErr, info1);
+    componentDidCatch(componentErr, info) {
+        this.props.fn(componentErr, info);
     }
     componentDidMount() {
         this.scrollToHash();
@@ -288,9 +288,9 @@ function _initNext() {
                     throw new Error(`The default export is not a React Component in page: "${page}"`);
                 }
             }
-        } catch (error1) {
+        } catch (error) {
             // This catches errors like throwing in the top level of a module
-            initialErr = error1;
+            initialErr = error;
         }
         if (process.env.NODE_ENV === 'development') {
             const { getNodeError  } = require('@next/react-dev-overlay/lib/client');

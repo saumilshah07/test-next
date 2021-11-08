@@ -62,7 +62,7 @@ function reduceSize(stats) {
 }
 const THRESHOLD = 16 * 1024;
 class BufferingStream extends _stream.Transform {
-    _transform(chunk, encoding, callback2) {
+    _transform(chunk, encoding, callback) {
         const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding);
         const size = buffer.length;
         if (this.itemsSize > 0 && this.itemsSize + size > THRESHOLD) {
@@ -76,15 +76,15 @@ class BufferingStream extends _stream.Transform {
             this.items.push(buffer);
             this.itemsSize += size;
         }
-        callback2();
+        callback();
     }
-    _flush(callback1) {
+    _flush(callback) {
         if (this.itemsSize > 0) {
             this.push(Buffer.concat(this.items));
             this.itemsSize = 0;
             this.items.length = 0;
         }
-        callback1();
+        callback();
     }
     constructor(...args){
         super(...args);

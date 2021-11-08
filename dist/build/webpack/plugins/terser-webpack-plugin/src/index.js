@@ -58,11 +58,11 @@ function buildError(error, file) {
     return new Error(`${file} from Terser\n${error.message}`);
 }
 class Webpack4Cache {
-    constructor(cacheDir, { SourceMapSource , RawSource  }){
+    constructor(cacheDir, { SourceMapSource: SourceMapSource1 , RawSource: RawSource1  }){
         this.cacheDir = cacheDir;
         this.sources = {
-            SourceMapSource,
-            RawSource
+            SourceMapSource: SourceMapSource1,
+            RawSource: RawSource1
         };
     }
     getLazyHashedEtag(obj) {
@@ -94,32 +94,32 @@ class Webpack4Cache {
             source
         };
     }
-    async storePromise(identifier1, etag1, data) {
-        await _cacache.default.put(this.cacheDir, etag1, JSON.stringify(data));
+    async storePromise(identifier, etag, data) {
+        await _cacache.default.put(this.cacheDir, etag, JSON.stringify(data));
     }
 }
 class TerserPlugin {
-    constructor(options1 = {
+    constructor(options = {
     }){
-        const { cacheDir , terserOptions ={
-        } , parallel , swcMinify  } = options1;
+        const { cacheDir: cacheDir1 , terserOptions ={
+        } , parallel , swcMinify  } = options;
         this.options = {
             swcMinify,
-            cacheDir,
+            cacheDir: cacheDir1,
             parallel,
             terserOptions
         };
     }
-    async optimize(compiler, compilation1, assets1, optimizeOptions, cache1, { SourceMapSource: SourceMapSource1 , RawSource: RawSource1  }) {
+    async optimize(compiler, compilation, assets, optimizeOptions, cache, { SourceMapSource , RawSource  }) {
         const compilerSpan = _profilingPlugin.spans.get(compiler);
         const terserSpan = compilerSpan.traceChild('terser-webpack-plugin-optimize');
         terserSpan.setAttribute('webpackVersion', _webpack.isWebpack5 ? 5 : 4);
-        terserSpan.setAttribute('compilationName', compilation1.name);
+        terserSpan.setAttribute('compilationName', compilation.name);
         return terserSpan.traceAsyncFn(async ()=>{
             let numberOfAssetsForMinify = 0;
-            const assetsList = _webpack.isWebpack5 ? Object.keys(assets1) : [
-                ...Array.from(compilation1.additionalChunkAssets || []),
-                ...Array.from(assets1).reduce((acc, chunk)=>{
+            const assetsList = _webpack.isWebpack5 ? Object.keys(assets) : [
+                ...Array.from(compilation.additionalChunkAssets || []),
+                ...Array.from(assets).reduce((acc, chunk)=>{
                     return acc.concat(Array.from(chunk.files || []));
                 }, []), 
             ];
@@ -130,7 +130,7 @@ class TerserPlugin {
                 })(name)) {
                     return false;
                 }
-                const res = compilation1.getAsset(name);
+                const res = compilation.getAsset(name);
                 if (!res) {
                     console.log(name);
                     return false;
@@ -142,9 +142,9 @@ class TerserPlugin {
                 }
                 return true;
             }).map(async (name)=>{
-                const { info , source  } = compilation1.getAsset(name);
-                const eTag = cache1.getLazyHashedEtag(source);
-                const output = await cache1.getPromise(name, eTag);
+                const { info , source  } = compilation.getAsset(name);
+                const eTag = cache.getLazyHashedEtag(source);
+                const output = await cache.getPromise(name, eTag);
                 if (!output) {
                     numberOfAssetsForMinify += 1;
                 }
@@ -162,8 +162,8 @@ class TerserPlugin {
             const getWorker = ()=>{
                 if (this.options.swcMinify) {
                     return {
-                        minify: async (options)=>{
-                            const result = await require('../../../../swc').transform(options.input, {
+                        minify: async (options1)=>{
+                            const result = await require('../../../../swc').transform(options1.input, {
                                 minify: true,
                                 jsc: {
                                     minify: {
@@ -201,7 +201,7 @@ class TerserPlugin {
                         if (!output) {
                             const { source: sourceFromInputSource , map: inputSourceMap  } = inputSource.sourceAndMap();
                             const input = Buffer.isBuffer(sourceFromInputSource) ? sourceFromInputSource.toString() : sourceFromInputSource;
-                            const options = {
+                            const options1 = {
                                 name,
                                 input,
                                 inputSourceMap,
@@ -209,32 +209,32 @@ class TerserPlugin {
                                     ...this.options.terserOptions
                                 }
                             };
-                            if (typeof options.terserOptions.module === 'undefined') {
+                            if (typeof options1.terserOptions.module === 'undefined') {
                                 if (typeof info.javascriptModule !== 'undefined') {
-                                    options.terserOptions.module = info.javascriptModule;
+                                    options1.terserOptions.module = info.javascriptModule;
                                 } else if (/\.mjs(\?.*)?$/i.test(name)) {
-                                    options.terserOptions.module = true;
+                                    options1.terserOptions.module = true;
                                 } else if (/\.cjs(\?.*)?$/i.test(name)) {
-                                    options.terserOptions.module = false;
+                                    options1.terserOptions.module = false;
                                 }
                             }
                             try {
-                                output = await getWorker().minify(options);
+                                output = await getWorker().minify(options1);
                             } catch (error) {
-                                compilation1.errors.push(buildError(error, name));
+                                compilation.errors.push(buildError(error, name));
                                 return;
                             }
                             if (output.map) {
-                                output.source = new SourceMapSource1(output.code, name, output.map, input, /** @type {SourceMapRawSourceMap} */ (inputSourceMap), true);
+                                output.source = new SourceMapSource(output.code, name, output.map, input, /** @type {SourceMapRawSourceMap} */ (inputSourceMap), true);
                             } else {
-                                output.source = new RawSource1(output.code);
+                                output.source = new RawSource(output.code);
                             }
                             if (_webpack.isWebpack5) {
-                                await cache1.storePromise(name, eTag, {
+                                await cache.storePromise(name, eTag, {
                                     source: output.source
                                 });
                             } else {
-                                await cache1.storePromise(name, eTag, {
+                                await cache.storePromise(name, eTag, {
                                     code: output.code,
                                     map: output.map,
                                     name,
@@ -247,7 +247,7 @@ class TerserPlugin {
                             minimized: true
                         };
                         const { source  } = output;
-                        compilation1.updateAsset(name, source, newInfo);
+                        compilation.updateAsset(name, source, newInfo);
                     });
                 }));
             }
@@ -260,24 +260,24 @@ class TerserPlugin {
     /**
    * @param {Compiler} compiler
    * @returns {void}
-   */ apply(compiler1) {
+   */ apply(compiler) {
         var ref;
-        const { SourceMapSource , RawSource  } = (compiler1 === null || compiler1 === void 0 ? void 0 : (ref = compiler1.webpack) === null || ref === void 0 ? void 0 : ref.sources) || _webpack.sources;
-        const { output  } = compiler1.options;
+        const { SourceMapSource: SourceMapSource2 , RawSource: RawSource2  } = (compiler === null || compiler === void 0 ? void 0 : (ref = compiler.webpack) === null || ref === void 0 ? void 0 : ref.sources) || _webpack.sources;
+        const { output  } = compiler.options;
         if (typeof this.options.terserOptions.ecma === 'undefined') {
             this.options.terserOptions.ecma = getEcmaVersion(output.environment || {
             });
         }
         const pluginName = this.constructor.name;
         const availableNumberOfCores = this.options.parallel;
-        compiler1.hooks.compilation.tap(pluginName, (compilation)=>{
+        compiler.hooks.compilation.tap(pluginName, (compilation)=>{
             // Don't run minifier against mini-css-extract-plugin
             if (compilation.name !== 'client' && compilation.name !== 'server') {
                 return;
             }
             const cache = _webpack.isWebpack5 ? compilation.getCache('TerserWebpackPlugin') : new Webpack4Cache(this.options.cacheDir, {
-                SourceMapSource,
-                RawSource
+                SourceMapSource: SourceMapSource2,
+                RawSource: RawSource2
             });
             const handleHashForChunk = (hash, chunk)=>{
                 // increment 'c' to invalidate cache
@@ -292,11 +292,11 @@ class TerserPlugin {
                 compilation.hooks.processAssets.tapPromise({
                     name: pluginName,
                     stage: _webpack.webpack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE
-                }, (assets)=>this.optimize(compiler1, compilation, assets, {
+                }, (assets)=>this.optimize(compiler, compilation, assets, {
                         availableNumberOfCores
                     }, cache, {
-                        SourceMapSource,
-                        RawSource
+                        SourceMapSource: SourceMapSource2,
+                        RawSource: RawSource2
                     })
                 );
                 compilation.hooks.statsPrinter.tap(pluginName, (stats)=>{
@@ -308,11 +308,11 @@ class TerserPlugin {
                 compilation.mainTemplate.hooks.hashForChunk.tap(pluginName, handleHashForChunk);
                 compilation.chunkTemplate.hooks.hashForChunk.tap(pluginName, handleHashForChunk);
                 compilation.hooks.optimizeChunkAssets.tapPromise(pluginName, async (assets)=>{
-                    return await this.optimize(compiler1, compilation, assets, {
+                    return await this.optimize(compiler, compilation, assets, {
                         availableNumberOfCores
                     }, cache, {
-                        SourceMapSource,
-                        RawSource
+                        SourceMapSource: SourceMapSource2,
+                        RawSource: RawSource2
                     });
                 });
             }

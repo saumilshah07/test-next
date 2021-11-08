@@ -24,7 +24,7 @@ const regexCssModules = /\.module\.css$/;
 // RegExps for Syntactically Awesome Style Sheets
 const regexSassGlobal = /(?<!\.module)\.(scss|sass)$/;
 const regexSassModules = /\.module\.(scss|sass)$/;
-const css = (0, _lodashCurry).default(async function css(ctx, config) {
+const css = (0, _lodashCurry).default(async function css1(ctx, config) {
     const { prependData: sassPrependData , additionalData: sassAdditionalData , ...sassOptions } = ctx.sassOptions;
     const sassPreprocessors = [
         // First, process files with `sass-loader`: this inlines content, and

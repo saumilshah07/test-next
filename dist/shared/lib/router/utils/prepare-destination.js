@@ -145,14 +145,14 @@ function prepareDestination(destination, params, query, appendParamsToQuery) {
     });
     let newUrl;
     // update any params in query values
-    for (const [key1, strOrArray] of Object.entries(destQuery)){
+    for (const [key, strOrArray] of Object.entries(destQuery)){
         // the value needs to start with a forward-slash to be compiled
         // correctly
         if (Array.isArray(strOrArray)) {
-            destQuery[key1] = strOrArray.map((value)=>compileNonPath(value, params)
+            destQuery[key] = strOrArray.map((value)=>compileNonPath(value, params)
             );
         } else {
-            destQuery[key1] = compileNonPath(strOrArray, params);
+            destQuery[key] = compileNonPath(strOrArray, params);
         }
     }
     // add path params to query if it's not a redirect and not
@@ -163,11 +163,11 @@ function prepareDestination(destination, params, query, appendParamsToQuery) {
         paramKeys = paramKeys.filter((name)=>name !== 'nextInternalLocale'
         );
     }
-    if (appendParamsToQuery && !paramKeys.some((key)=>destPathParams.includes(key)
+    if (appendParamsToQuery && !paramKeys.some((key1)=>destPathParams.includes(key1)
     )) {
-        for (const key of paramKeys){
-            if (!(key in destQuery)) {
-                destQuery[key] = params[key];
+        for (const key1 of paramKeys){
+            if (!(key1 in destQuery)) {
+                destQuery[key1] = params[key1];
             }
         }
     }

@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.getTypeScriptConfiguration = getTypeScriptConfiguration;
 var _chalk = _interopRequireDefault(require("chalk"));
 var _os = _interopRequireDefault(require("os"));
-var _path = _interopRequireDefault(require("path"));
+var _path1 = _interopRequireDefault(require("path"));
 var _fatalError = require("../fatal-error");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -35,7 +35,7 @@ async function getTypeScriptConfiguration(ts, tsConfigPath, metaOnly) {
                     extensions ? `file${extensions[0]}` : `file.ts`
                 ];
             }
-        } : ts.sys, _path.default.dirname(tsConfigPath));
+        } : ts.sys, _path1.default.dirname(tsConfigPath));
         if (result.errors) {
             result.errors = result.errors.filter(({ code  })=>// No inputs were found in config file
                 code !== 18003

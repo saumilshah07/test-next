@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = void 0;
-class ImageData {
+class ImageData1 {
     static from(input) {
-        return new ImageData(input.data || input._data, input.width, input.height);
+        return new ImageData1(input.data || input._data, input.width, input.height);
     }
     get data() {
         if (Object.prototype.toString.call(this._data) === '[object Object]') {
@@ -22,6 +22,6 @@ class ImageData {
         this.height = height;
     }
 }
-exports.default = ImageData;
+exports.default = ImageData1;
 
 //# sourceMappingURL=image_data.js.map

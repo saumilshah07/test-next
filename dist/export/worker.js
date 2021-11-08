@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exportPage;
 var _url = _interopRequireDefault(require("url"));
-var _path1 = require("path");
+var _path = require("path");
 var _render = require("../server/render");
 var _fs = require("fs");
 var _amphtmlValidator = _interopRequireDefault(require("next/dist/compiled/amphtml-validator"));
@@ -121,11 +121,11 @@ async function exportPage({ parentSpanId , path , pathMap , distDir , outDir , p
                 serverRuntimeConfig,
                 publicRuntimeConfig: renderOpts.runtimeConfig
             });
-            const getHtmlFilename = (_path)=>subFolders ? `${_path}${_path1.sep}index.html` : `${_path}.html`
+            const getHtmlFilename = (_path1)=>subFolders ? `${_path1}${_path.sep}index.html` : `${_path1}.html`
             ;
             let htmlFilename = getHtmlFilename(filePath);
-            const pageExt = (0, _path1).extname(page);
-            const pathExt = (0, _path1).extname(path);
+            const pageExt = (0, _path).extname(page);
+            const pathExt = (0, _path).extname(path);
             // Make sure page isn't a folder with a dot in the name e.g. `v1.2`
             if (pageExt !== pathExt && pathExt !== '') {
                 const isBuiltinPaths = [
@@ -141,8 +141,8 @@ async function exportPage({ parentSpanId , path , pathMap , distDir , outDir , p
                 // If the path is the root, just use index.html
                 htmlFilename = 'index.html';
             }
-            const baseDir = (0, _path1).join(outDir, (0, _path1).dirname(htmlFilename));
-            let htmlFilepath = (0, _path1).join(outDir, htmlFilename);
+            const baseDir = (0, _path).join(outDir, (0, _path).dirname(htmlFilename));
+            let htmlFilepath = (0, _path).join(outDir, htmlFilename);
             await _fs.promises.mkdir(baseDir, {
                 recursive: true
             });
@@ -301,12 +301,12 @@ async function exportPage({ parentSpanId , path , pathMap , distDir , outDir , p
                 }
             } else if (hybridAmp) {
                 // we need to render the AMP version
-                let ampHtmlFilename = `${ampPath}${_path1.sep}index.html`;
+                let ampHtmlFilename = `${ampPath}${_path.sep}index.html`;
                 if (!subFolders) {
                     ampHtmlFilename = `${ampPath}.html`;
                 }
-                const ampBaseDir = (0, _path1).join(outDir, (0, _path1).dirname(ampHtmlFilename));
-                const ampHtmlFilepath = (0, _path1).join(outDir, ampHtmlFilename);
+                const ampBaseDir = (0, _path).join(outDir, (0, _path).dirname(ampHtmlFilename));
+                const ampHtmlFilepath = (0, _path).join(outDir, ampHtmlFilename);
                 try {
                     await _fs.promises.access(ampHtmlFilepath);
                 } catch (_) {
@@ -336,8 +336,8 @@ async function exportPage({ parentSpanId , path , pathMap , distDir , outDir , p
                 }
             }
             if (curRenderOpts.pageData) {
-                const dataFile = (0, _path1).join(pagesDataDir, htmlFilename.replace(/\.html$/, '.json'));
-                await _fs.promises.mkdir((0, _path1).dirname(dataFile), {
+                const dataFile = (0, _path).join(pagesDataDir, htmlFilename.replace(/\.html$/, '.json'));
+                await _fs.promises.mkdir((0, _path).dirname(dataFile), {
                     recursive: true
                 });
                 await _fs.promises.writeFile(dataFile, JSON.stringify(curRenderOpts.pageData), 'utf8');

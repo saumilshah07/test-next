@@ -55,12 +55,12 @@ class IncrementalCache {
     getSeedPath(pathname, ext) {
         return _path.default.join(this.incrementalOptions.pagesDir, `${pathname}.${ext}`);
     }
-    calculateRevalidate(pathname1, fromTime) {
-        pathname1 = toRoute(pathname1);
+    calculateRevalidate(pathname, fromTime) {
+        pathname = toRoute(pathname);
         // in development we don't have a prerender-manifest
         // and default to always revalidating to allow easier debugging
         if (this.incrementalOptions.dev) return new Date().getTime() - 1000;
-        const { initialRevalidateSeconds  } = this.prerenderManifest.routes[pathname1] || {
+        const { initialRevalidateSeconds  } = this.prerenderManifest.routes[pathname] || {
             initialRevalidateSeconds: 1
         };
         const revalidateAfter = typeof initialRevalidateSeconds === 'number' ? initialRevalidateSeconds * 1000 + fromTime : initialRevalidateSeconds;
@@ -71,27 +71,27 @@ class IncrementalCache {
         return _fs.promises.readFile(this.getSeedPath(page, 'html'), 'utf8');
     }
     // get data from cache if available
-    async get(pathname2) {
+    async get(pathname) {
         if (this.incrementalOptions.dev) return null;
-        pathname2 = (0, _normalizePagePath).normalizePagePath(pathname2);
-        let data = this.cache && this.cache.get(pathname2);
+        pathname = (0, _normalizePagePath).normalizePagePath(pathname);
+        let data = this.cache && this.cache.get(pathname);
         // let's check the disk for seed data
         if (!data) {
-            if (this.prerenderManifest.notFoundRoutes.includes(pathname2)) {
+            if (this.prerenderManifest.notFoundRoutes.includes(pathname)) {
                 const now = Date.now();
-                const revalidateAfter = this.calculateRevalidate(pathname2, now);
+                const revalidateAfter = this.calculateRevalidate(pathname, now);
                 data = {
                     value: null,
                     revalidateAfter: revalidateAfter !== false ? now : false
                 };
             }
             try {
-                const htmlPath = this.getSeedPath(pathname2, 'html');
+                const htmlPath = this.getSeedPath(pathname, 'html');
                 const html = await _fs.promises.readFile(htmlPath, 'utf8');
                 const { mtime  } = await _fs.promises.stat(htmlPath);
-                const pageData = JSON.parse(await _fs.promises.readFile(this.getSeedPath(pathname2, 'json'), 'utf8'));
+                const pageData = JSON.parse(await _fs.promises.readFile(this.getSeedPath(pathname, 'json'), 'utf8'));
                 data = {
-                    revalidateAfter: this.calculateRevalidate(pathname2, mtime.getTime()),
+                    revalidateAfter: this.calculateRevalidate(pathname, mtime.getTime()),
                     value: {
                         kind: 'PAGE',
                         html,
@@ -99,7 +99,7 @@ class IncrementalCache {
                     }
                 };
                 if (this.cache) {
-                    this.cache.set(pathname2, data);
+                    this.cache.set(pathname, data);
                 }
             } catch (_) {
             // unable to get data from disk
@@ -111,7 +111,7 @@ class IncrementalCache {
         if (data && data.revalidateAfter !== false && data.revalidateAfter < new Date().getTime()) {
             data.isStale = true;
         }
-        const manifestPath = toRoute(pathname2);
+        const manifestPath = toRoute(pathname);
         const manifestEntry = this.prerenderManifest.routes[manifestPath];
         if (data && manifestEntry) {
             data.curRevalidate = manifestEntry.initialRevalidateSeconds;
@@ -119,21 +119,21 @@ class IncrementalCache {
         return data;
     }
     // populate the incremental cache with new data
-    async set(pathname3, data, revalidateSeconds) {
+    async set(pathname, data, revalidateSeconds) {
         if (this.incrementalOptions.dev) return;
         if (typeof revalidateSeconds !== 'undefined') {
             // TODO: Update this to not mutate the manifest from the
             // build.
-            this.prerenderManifest.routes[pathname3] = {
-                dataRoute: _path.default.posix.join('/_next/data', `${(0, _normalizePagePath).normalizePagePath(pathname3)}.json`),
+            this.prerenderManifest.routes[pathname] = {
+                dataRoute: _path.default.posix.join('/_next/data', `${(0, _normalizePagePath).normalizePagePath(pathname)}.json`),
                 srcRoute: null,
                 initialRevalidateSeconds: revalidateSeconds
             };
         }
-        pathname3 = (0, _normalizePagePath).normalizePagePath(pathname3);
+        pathname = (0, _normalizePagePath).normalizePagePath(pathname);
         if (this.cache) {
-            this.cache.set(pathname3, {
-                revalidateAfter: this.calculateRevalidate(pathname3, new Date().getTime()),
+            this.cache.set(pathname, {
+                revalidateAfter: this.calculateRevalidate(pathname, new Date().getTime()),
                 value: data
             });
         }
@@ -141,15 +141,15 @@ class IncrementalCache {
         // `next build` output's manifest.
         if (this.incrementalOptions.flushToDisk && (data === null || data === void 0 ? void 0 : data.kind) === 'PAGE') {
             try {
-                const seedPath = this.getSeedPath(pathname3, 'html');
+                const seedPath = this.getSeedPath(pathname, 'html');
                 await _fs.promises.mkdir(_path.default.dirname(seedPath), {
                     recursive: true
                 });
                 await _fs.promises.writeFile(seedPath, data.html, 'utf8');
-                await _fs.promises.writeFile(this.getSeedPath(pathname3, 'json'), JSON.stringify(data.pageData), 'utf8');
+                await _fs.promises.writeFile(this.getSeedPath(pathname, 'json'), JSON.stringify(data.pageData), 'utf8');
             } catch (error) {
                 // failed to flush to disk
-                console.warn('Failed to update prerender files for', pathname3, error);
+                console.warn('Failed to update prerender files for', pathname, error);
             }
         }
     }

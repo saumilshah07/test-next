@@ -65,8 +65,8 @@ class PageLoader {
         return this.promisedSsgManifest.then((s)=>s.has(route)
         );
     }
-    loadPage(route1) {
-        return this.routeLoader.loadRoute(route1).then((res)=>{
+    loadPage(route) {
+        return this.routeLoader.loadRoute(route).then((res)=>{
             if ('component' in res) {
                 return {
                     page: res.component,
@@ -81,8 +81,8 @@ class PageLoader {
             throw res.error;
         });
     }
-    prefetch(route2) {
-        return this.routeLoader.prefetch(route2);
+    prefetch(route) {
+        return this.routeLoader.prefetch(route);
     }
     constructor(buildId, assetPrefix){
         this.routeLoader = (0, _routeLoader).createRouteLoader(assetPrefix);

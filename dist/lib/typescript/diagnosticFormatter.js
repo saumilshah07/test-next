@@ -12,14 +12,14 @@ function _interopRequireDefault(obj) {
         default: obj
     };
 }
-var DiagnosticCategory1;
-exports.DiagnosticCategory = DiagnosticCategory1;
-(function(DiagnosticCategory) {
-    DiagnosticCategory[DiagnosticCategory["Warning"] = 0] = "Warning";
-    DiagnosticCategory[DiagnosticCategory["Error"] = 1] = "Error";
-    DiagnosticCategory[DiagnosticCategory["Suggestion"] = 2] = "Suggestion";
-    DiagnosticCategory[DiagnosticCategory["Message"] = 3] = "Message";
-})(DiagnosticCategory1 || (exports.DiagnosticCategory = DiagnosticCategory1 = {
+var DiagnosticCategory;
+exports.DiagnosticCategory = DiagnosticCategory;
+(function(DiagnosticCategory1) {
+    DiagnosticCategory1[DiagnosticCategory1["Warning"] = 0] = "Warning";
+    DiagnosticCategory1[DiagnosticCategory1["Error"] = 1] = "Error";
+    DiagnosticCategory1[DiagnosticCategory1["Suggestion"] = 2] = "Suggestion";
+    DiagnosticCategory1[DiagnosticCategory1["Message"] = 3] = "Message";
+})(DiagnosticCategory || (exports.DiagnosticCategory = DiagnosticCategory = {
 }));
 async function getFormattedDiagnostic(ts, baseDir, diagnostic) {
     let message = '';
@@ -27,20 +27,20 @@ async function getFormattedDiagnostic(ts, baseDir, diagnostic) {
     const category = diagnostic.category;
     switch(category){
         // Warning
-        case DiagnosticCategory1.Warning:
+        case DiagnosticCategory.Warning:
             {
                 message += _chalk.default.yellow.bold('Type warning') + ': ';
                 break;
             }
         // Error
-        case DiagnosticCategory1.Error:
+        case DiagnosticCategory.Error:
             {
                 message += _chalk.default.red.bold('Type error') + ': ';
                 break;
             }
         // 2 = Suggestion, 3 = Message
-        case DiagnosticCategory1.Suggestion:
-        case DiagnosticCategory1.Message:
+        case DiagnosticCategory.Suggestion:
+        case DiagnosticCategory.Message:
         default:
             {
                 message += _chalk.default.cyan.bold(category === 2 ? 'Suggestion' : 'Info') + ': ';

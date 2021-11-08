@@ -19,8 +19,8 @@ async function installDependencies(baseDir, deps, dev = false) {
     if (deps.length) {
         console.log();
         console.log(`Installing ${dev ? 'devDependencies' : 'dependencies'}:`);
-        for (const dep1 of deps){
-            console.log(`- ${_chalk.default.cyan(dep1.pkg)}`);
+        for (const dep of deps){
+            console.log(`- ${_chalk.default.cyan(dep.pkg)}`);
         }
         console.log();
         const devInstallFlags = {
@@ -30,7 +30,7 @@ async function installDependencies(baseDir, deps, dev = false) {
                 isOnline
             }
         };
-        await (0, _install).install(_path.default.resolve(baseDir), deps.map((dep)=>dep.pkg
+        await (0, _install).install(_path.default.resolve(baseDir), deps.map((dep1)=>dep1.pkg
         ), devInstallFlags);
         console.log();
     }

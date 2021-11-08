@@ -188,9 +188,9 @@ async function lint(baseDir, lintDirs, eslintrcFile, pkgJsonPath, lintDuringBuil
 }
 async function runLintCheck(baseDir, lintDirs, lintDuringBuild = false, eslintOptions = null, reportErrorsOnly = false, maxWarnings = -1, formatter = null, strict = false) {
     try {
-        var ref;
+        var ref1;
         // Find user's .eslintrc file
-        const eslintrcFile = (ref = await (0, _findUp).default([
+        const eslintrcFile = (ref1 = await (0, _findUp).default([
             '.eslintrc.js',
             '.eslintrc.yaml',
             '.eslintrc.yml',
@@ -198,11 +198,11 @@ async function runLintCheck(baseDir, lintDirs, lintDuringBuild = false, eslintOp
             '.eslintrc', 
         ], {
             cwd: baseDir
-        })) !== null && ref !== void 0 ? ref : null;
-        var ref6;
-        const pkgJsonPath = (ref6 = await (0, _findUp).default('package.json', {
+        })) !== null && ref1 !== void 0 ? ref1 : null;
+        var ref2;
+        const pkgJsonPath = (ref2 = await (0, _findUp).default('package.json', {
             cwd: baseDir
-        })) !== null && ref6 !== void 0 ? ref6 : null;
+        })) !== null && ref2 !== void 0 ? ref2 : null;
         let packageJsonConfig = null;
         if (pkgJsonPath) {
             const pkgJsonContent = await _fs.promises.readFile(pkgJsonPath, {

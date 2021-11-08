@@ -79,17 +79,17 @@ class DropClientPage {
                 // Remove preparedEntrypoint that has bundle drop marker
                 // This will ensure webpack does not create chunks/bundles for this particular entrypoint
                 for(let i = compilation._preparedEntrypoints.length - 1; i >= 0; i--){
-                    var ref1, ref2;
+                    var ref, ref1;
                     const entrypoint = compilation._preparedEntrypoints[i];
-                    if (entrypoint === null || entrypoint === void 0 ? void 0 : (ref1 = entrypoint.module) === null || ref1 === void 0 ? void 0 : (ref2 = ref1.buildInfo) === null || ref2 === void 0 ? void 0 : ref2.NEXT_ampFirst) {
+                    if (entrypoint === null || entrypoint === void 0 ? void 0 : (ref = entrypoint.module) === null || ref === void 0 ? void 0 : (ref1 = ref.buildInfo) === null || ref1 === void 0 ? void 0 : ref1.NEXT_ampFirst) {
                         ampFirstEntryNamesItem.push(entrypoint.name);
                         compilation._preparedEntrypoints.splice(i, 1);
                     }
                 }
                 for(let i1 = compilation.entries.length - 1; i1 >= 0; i1--){
-                    var ref3;
+                    var ref5;
                     const entryModule = compilation.entries[i1];
-                    if (entryModule === null || entryModule === void 0 ? void 0 : (ref3 = entryModule.buildInfo) === null || ref3 === void 0 ? void 0 : ref3.NEXT_ampFirst) {
+                    if (entryModule === null || entryModule === void 0 ? void 0 : (ref5 = entryModule.buildInfo) === null || ref5 === void 0 ? void 0 : ref5.NEXT_ampFirst) {
                         compilation.entries.splice(i1, 1);
                     }
                 }

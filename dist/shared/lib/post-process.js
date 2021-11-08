@@ -50,8 +50,8 @@ async function processHTML(html, data, options) {
     return document;
 }
 class FontOptimizerMiddleware {
-    inspect(originalDom, options1) {
-        if (!options1.getFontDefinition) {
+    inspect(originalDom, options) {
+        if (!options.getFontDefinition) {
             return;
         }
         const fontDefinitions = [];
@@ -111,9 +111,9 @@ class FontOptimizerMiddleware {
     }
 }
 class ImageOptimizerMiddleware {
-    inspect(originalDom1) {
+    inspect(originalDom) {
         const imgPreloads = [];
-        const imgElements = originalDom1.querySelectorAll('img');
+        const imgElements = originalDom.querySelectorAll('img');
         let eligibleImages = [];
         for(let i = 0; i < imgElements.length; i++){
             if (isImgEligible(imgElements[i])) {

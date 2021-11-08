@@ -383,7 +383,7 @@ async function computeFromManifest(manifest, distPath, gzipSize = true, pageInfo
                 await getSize(_path.default.join(distPath, f))
             ]
         ));
-    } catch (_1) {
+    } catch (_) {
         uniqueStats = [];
     }
     lastCompute = {
@@ -680,9 +680,9 @@ function detectConflictingPaths(combinedPages, ssgPages, additionalSsgPaths) {
             } else {
                 let conflictingPath;
                 conflictingPage = dynamicSsgPages.find((page)=>{
-                    var ref;
+                    var ref9;
                     if (page === pathsPage) return false;
-                    conflictingPath = (ref = additionalSsgPaths.get(page)) === null || ref === void 0 ? void 0 : ref.find((compPath)=>compPath.toLowerCase() === lowerPath
+                    conflictingPath = (ref9 = additionalSsgPaths.get(page)) === null || ref9 === void 0 ? void 0 : ref9.find((compPath)=>compPath.toLowerCase() === lowerPath
                     );
                     return conflictingPath;
                 });

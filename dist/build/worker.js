@@ -9,16 +9,6 @@ Object.defineProperty(exports, "exportPage", {
     }
 });
 var _utils = _interopRequireWildcard(require("./utils"));
-Object.keys(_utils).forEach(function(key) {
-    if (key === "default" || key === "__esModule") return;
-    if (key in exports && exports[key] === _utils[key]) return;
-    Object.defineProperty(exports, key, {
-        enumerable: true,
-        get: function() {
-            return _utils[key];
-        }
-    });
-});
 var _worker = _interopRequireDefault(require("../export/worker"));
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -48,5 +38,15 @@ function _interopRequireWildcard(obj) {
         return newObj;
     }
 }
+Object.keys(_utils).forEach(function(key) {
+    if (key === "default" || key === "__esModule") return;
+    if (key in exports && exports[key] === _utils[key]) return;
+    Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: function() {
+            return _utils[key];
+        }
+    });
+});
 
 //# sourceMappingURL=worker.js.map

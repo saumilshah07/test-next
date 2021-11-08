@@ -26,25 +26,25 @@ function startedDevelopmentServer(appUrl, bindAddr) {
 let previousClient = null;
 let previousServer = null;
 var // eslint typescript has a bug with TS enums
-/* eslint-disable no-shadow */ WebpackStatusPhase1;
-(function(WebpackStatusPhase) {
-    WebpackStatusPhase[WebpackStatusPhase["COMPILING"] = 1] = "COMPILING";
-    WebpackStatusPhase[WebpackStatusPhase["COMPILED_WITH_ERRORS"] = 2] = "COMPILED_WITH_ERRORS";
-    WebpackStatusPhase[WebpackStatusPhase["COMPILED_WITH_WARNINGS"] = 4] = "COMPILED_WITH_WARNINGS";
-    WebpackStatusPhase[WebpackStatusPhase["COMPILED"] = 5] = "COMPILED";
-})(WebpackStatusPhase1 || (WebpackStatusPhase1 = {
+/* eslint-disable no-shadow */ WebpackStatusPhase;
+(function(WebpackStatusPhase1) {
+    WebpackStatusPhase1[WebpackStatusPhase1["COMPILING"] = 1] = "COMPILING";
+    WebpackStatusPhase1[WebpackStatusPhase1["COMPILED_WITH_ERRORS"] = 2] = "COMPILED_WITH_ERRORS";
+    WebpackStatusPhase1[WebpackStatusPhase1["COMPILED_WITH_WARNINGS"] = 4] = "COMPILED_WITH_WARNINGS";
+    WebpackStatusPhase1[WebpackStatusPhase1["COMPILED"] = 5] = "COMPILED";
+})(WebpackStatusPhase || (WebpackStatusPhase = {
 }));
 function getWebpackStatusPhase(status) {
     if (status.loading) {
-        return WebpackStatusPhase1.COMPILING;
+        return WebpackStatusPhase.COMPILING;
     }
     if (status.errors) {
-        return WebpackStatusPhase1.COMPILED_WITH_ERRORS;
+        return WebpackStatusPhase.COMPILED_WITH_ERRORS;
     }
     if (status.warnings) {
-        return WebpackStatusPhase1.COMPILED_WITH_WARNINGS;
+        return WebpackStatusPhase.COMPILED_WITH_WARNINGS;
     }
-    return WebpackStatusPhase1.COMPILED;
+    return WebpackStatusPhase.COMPILED;
 }
 function formatAmpMessages(amp) {
     let output = _chalk.default.bold('Amp Validation') + '\n\n';
@@ -67,8 +67,8 @@ function formatAmpMessages(amp) {
             warn.specUrl || ''
         ]);
     }
-    for(const page1 in amp){
-        let { errors , warnings  } = amp[page1];
+    for(const page in amp){
+        let { errors , warnings  } = amp[page];
         const devOnlyFilter = (err)=>err.code !== 'DEV_MODE_ONLY'
         ;
         errors = errors.filter(devOnlyFilter);
@@ -77,13 +77,13 @@ function formatAmpMessages(amp) {
             continue;
         }
         if (errors.length) {
-            ampError(page1, errors[0]);
+            ampError(page, errors[0]);
             for(let index = 1; index < errors.length; ++index){
                 ampError('', errors[index]);
             }
         }
         if (warnings.length) {
-            ampWarn(errors.length ? '' : page1, warnings[0]);
+            ampWarn(errors.length ? '' : page, warnings[0]);
             for(let index = 1; index < warnings.length; ++index){
                 ampWarn('', warnings[index]);
             }
@@ -106,7 +106,7 @@ function formatAmpMessages(amp) {
             'l'
         ],
         stringLength (str) {
-            return((0, _stripAnsi).default(str).length);
+            return (0, _stripAnsi).default(str).length;
         }
     });
     return output;

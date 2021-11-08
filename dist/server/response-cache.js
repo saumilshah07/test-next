@@ -32,7 +32,7 @@ class ResponseCache {
             this.pendingResponses.set(key, promise);
         }
         let resolved = false;
-        const resolve1 = (cacheEntry)=>{
+        const resolve = (cacheEntry)=>{
             if (key) {
                 // Ensure all reads from the cache get the latest value.
                 this.pendingResponses.set(key, Promise.resolve(cacheEntry));
@@ -47,7 +47,7 @@ class ResponseCache {
                 const cachedResponse = key ? await this.incrementalCache.get(key) : null;
                 if (cachedResponse) {
                     var ref;
-                    resolve1({
+                    resolve({
                         revalidate: cachedResponse.curRevalidate,
                         value: ((ref = cachedResponse.value) === null || ref === void 0 ? void 0 : ref.kind) === 'PAGE' ? {
                             kind: 'PAGE',
@@ -62,10 +62,10 @@ class ResponseCache {
                     }
                 }
                 const cacheEntry = await responseGenerator(resolved);
-                resolve1(cacheEntry);
+                resolve(cacheEntry);
                 if (key && cacheEntry && typeof cacheEntry.revalidate !== 'undefined') {
-                    var ref1;
-                    await this.incrementalCache.set(key, ((ref1 = cacheEntry.value) === null || ref1 === void 0 ? void 0 : ref1.kind) === 'PAGE' ? {
+                    var ref;
+                    await this.incrementalCache.set(key, ((ref = cacheEntry.value) === null || ref === void 0 ? void 0 : ref.kind) === 'PAGE' ? {
                         kind: 'PAGE',
                         html: await (0, _utils).resultsToString([
                             cacheEntry.value.html

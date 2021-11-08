@@ -93,8 +93,8 @@ class JsConfigPathsPlugin {
         log('resolved baseUrl: %s', resolvedBaseUrl);
     }
     apply(resolver) {
-        const paths = this.paths;
-        const pathsKeys = Object.keys(paths);
+        const paths1 = this.paths;
+        const pathsKeys = Object.keys(paths1);
         // If no aliases are added bail out
         if (pathsKeys.length === 0) {
             log('paths are empty, bailing out');
@@ -127,7 +127,7 @@ class JsConfigPathsPlugin {
             const matchedStar = isString(matchedPattern) ? undefined : matchedText(matchedPattern, moduleName);
             const matchedPatternText = isString(matchedPattern) ? matchedPattern : patternText(matchedPattern);
             let triedPaths = [];
-            for (const subst of paths[matchedPatternText]){
+            for (const subst of paths1[matchedPatternText]){
                 const curPath = matchedStar ? subst.replace('*', matchedStar) : subst;
                 // Ensure .d.ts is not matched
                 if (curPath.endsWith('.d.ts')) {

@@ -5,29 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 var _exportNames = {
 };
 var _global = _interopRequireWildcard(require("./global"));
-Object.keys(_global).forEach(function(key) {
-    if (key === "default" || key === "__esModule") return;
-    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-    if (key in exports && exports[key] === _global[key]) return;
-    Object.defineProperty(exports, key, {
-        enumerable: true,
-        get: function() {
-            return _global[key];
-        }
-    });
-});
 var _modules = _interopRequireWildcard(require("./modules"));
-Object.keys(_modules).forEach(function(key) {
-    if (key === "default" || key === "__esModule") return;
-    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-    if (key in exports && exports[key] === _modules[key]) return;
-    Object.defineProperty(exports, key, {
-        enumerable: true,
-        get: function() {
-            return _modules[key];
-        }
-    });
-});
 function _interopRequireWildcard(obj) {
     if (obj && obj.__esModule) {
         return obj;
@@ -51,5 +29,27 @@ function _interopRequireWildcard(obj) {
         return newObj;
     }
 }
+Object.keys(_global).forEach(function(key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    if (key in exports && exports[key] === _global[key]) return;
+    Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: function() {
+            return _global[key];
+        }
+    });
+});
+Object.keys(_modules).forEach(function(key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    if (key in exports && exports[key] === _modules[key]) return;
+    Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: function() {
+            return _modules[key];
+        }
+    });
+});
 
 //# sourceMappingURL=index.js.map

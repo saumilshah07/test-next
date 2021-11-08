@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = Image;
+exports.default = Image1;
 var _react = _interopRequireDefault(require("react"));
 var _head = _interopRequireDefault(require("../shared/lib/head"));
 var _toBase64 = require("../shared/lib/to-base-64");
@@ -275,25 +275,8 @@ function handleLoading(img, src, layout, placeholder, onLoadingComplete) {
         img.onload = handleLoad;
     }
 }
-function Image(_param) {
-    var { src , sizes , unoptimized =false , priority =false , loading , lazyBoundary ='200px' , className , quality , width , height , objectFit , objectPosition , onLoadingComplete , loader =defaultImageLoader , placeholder ='empty' , blurDataURL  } = _param, all = _objectWithoutProperties(_param, [
-        "src",
-        "sizes",
-        "unoptimized",
-        "priority",
-        "loading",
-        "lazyBoundary",
-        "className",
-        "quality",
-        "width",
-        "height",
-        "objectFit",
-        "objectPosition",
-        "onLoadingComplete",
-        "loader",
-        "placeholder",
-        "blurDataURL"
-    ]);
+function Image1(_param) {
+    var { src , sizes , unoptimized =false , priority =false , loading , lazyBoundary ='200px' , className , quality , width , height , objectFit , objectPosition , onLoadingComplete , loader =defaultImageLoader , placeholder ='empty' , blurDataURL  } = _param, all = _objectWithoutProperties(_param, ["src", "sizes", "unoptimized", "priority", "loading", "lazyBoundary", "className", "quality", "width", "height", "objectFit", "objectPosition", "onLoadingComplete", "loader", "placeholder", "blurDataURL"]);
     let rest = all;
     let layout = sizes ? 'responsive' : 'intrinsic';
     if ('layout' in rest) {

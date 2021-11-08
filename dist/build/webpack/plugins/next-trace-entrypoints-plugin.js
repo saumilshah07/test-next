@@ -30,9 +30,9 @@ class TraceEntryPointsPlugin {
     }
     // Here we output all traced assets and webpack chunks to a
     // ${page}.js.nft.json file
-    createTraceAssets(compilation1, assets1) {
-        const outputPath = compilation1.outputOptions.path;
-        for (const entrypoint of compilation1.entrypoints.values()){
+    createTraceAssets(compilation, assets) {
+        const outputPath = compilation.outputOptions.path;
+        for (const entrypoint of compilation.entrypoints.values()){
             const entryFiles = new Set();
             for (const chunk of entrypoint.getEntrypointChunk().getAllReferencedChunks()){
                 for (const file of chunk.files){
@@ -46,7 +46,7 @@ class TraceEntryPointsPlugin {
             entryFiles.delete(_path.default.join(outputPath, `${_webpack.isWebpack5 ? '../' : ''}${entrypoint.name}.js`));
             const traceOutputName = `${_webpack.isWebpack5 ? '../' : ''}${entrypoint.name}.js.nft.json`;
             const traceOutputPath = _path.default.dirname(_path.default.join(outputPath, traceOutputName));
-            assets1[traceOutputName] = new _webpack.sources.RawSource(JSON.stringify({
+            assets[traceOutputName] = new _webpack.sources.RawSource(JSON.stringify({
                 version: _constants.TRACE_OUTPUT_VERSION,
                 files: [
                     ...entryFiles,
@@ -137,9 +137,9 @@ class TraceEntryPointsPlugin {
                     const nftCache = {
                     };
                     const entryPaths = Array.from(entryModMap.keys());
-                    for (const entry1 of entryPaths){
+                    for (const entry of entryPaths){
                         depModMap.clear();
-                        const entryMod = entryModMap.get(entry1);
+                        const entryMod = entryModMap.get(entry);
                         // TODO: investigate caching, will require ensuring no traced
                         // files in the cache have changed, we could potentially hash
                         // all traced files and only leverage the cache if the hashes
@@ -169,7 +169,7 @@ class TraceEntryPointsPlugin {
                         };
                         collectDependencies(entryMod);
                         const toTrace = [
-                            entry1,
+                            entry,
                             ...depModMap.keys()
                         ];
                         const root = _path.default.parse(process.cwd()).root;
@@ -196,7 +196,7 @@ class TraceEntryPointsPlugin {
                         //   version: TRACE_OUTPUT_VERSION,
                         //   tracedDeps,
                         // }
-                        this.entryTraces.set(entryNameMap.get(entry1), tracedDeps);
+                        this.entryTraces.set(entryNameMap.get(entry), tracedDeps);
                     }
                     callback();
                 } catch (err) {

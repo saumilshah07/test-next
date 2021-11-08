@@ -75,7 +75,7 @@ const experimentalWarning = (0, _utils).execOnce(()=>{
     console.warn();
 });
 function assignDefaults(userConfig) {
-    var ref3;
+    var ref;
     if (typeof userConfig.exportTrailingSlash !== 'undefined') {
         console.warn(_chalk.default.yellow.bold('Warning: ') + 'The "exportTrailingSlash" option has been renamed to "trailingSlash". Please update your next.config.js.');
         if (typeof userConfig.trailingSlash === 'undefined') {
@@ -83,7 +83,7 @@ function assignDefaults(userConfig) {
         }
         delete userConfig.exportTrailingSlash;
     }
-    if (typeof ((ref3 = userConfig.experimental) === null || ref3 === void 0 ? void 0 : ref3.reactMode) !== 'undefined') {
+    if (typeof ((ref = userConfig.experimental) === null || ref === void 0 ? void 0 : ref.reactMode) !== 'undefined') {
         var ref1;
         console.warn(_chalk.default.yellow.bold('Warning: ') + 'The experimental "reactMode" option has been replaced with "reactRoot". Please update your next.config.js.');
         if (typeof ((ref1 = userConfig.experimental) === null || ref1 === void 0 ? void 0 : ref1.reactRoot) === 'undefined') {
@@ -272,11 +272,11 @@ function assignDefaults(userConfig) {
         }
         if (i18n.domains) {
             const invalidDomainItems = i18n.domains.filter((item)=>{
-                var ref;
+                var ref3;
                 if (!item || typeof item !== 'object') return true;
                 if (!item.defaultLocale) return true;
                 if (!item.domain || typeof item.domain !== 'string') return true;
-                const defaultLocaleDuplicate = (ref = i18n.domains) === null || ref === void 0 ? void 0 : ref.find((altItem)=>altItem.defaultLocale === item.defaultLocale && altItem.domain !== item.domain
+                const defaultLocaleDuplicate = (ref3 = i18n.domains) === null || ref3 === void 0 ? void 0 : ref3.find((altItem)=>altItem.defaultLocale === item.defaultLocale && altItem.domain !== item.domain
                 );
                 if (defaultLocaleDuplicate) {
                     console.warn(`Both ${item.domain} and ${defaultLocaleDuplicate.domain} configured the defaultLocale ${item.defaultLocale} but only one can. Change one item's default locale to continue`);
@@ -341,7 +341,7 @@ async function loadConfig(phase, dir, customConfig) {
     });
     // If config file was found
     if (path === null || path === void 0 ? void 0 : path.length) {
-        var ref;
+        var ref4;
         let userConfigModule;
         try {
             userConfigModule = require(path);
@@ -356,7 +356,7 @@ async function loadConfig(phase, dir, customConfig) {
         if (userConfig.target && !targets.includes(userConfig.target)) {
             throw new Error(`Specified target is invalid. Provided: "${userConfig.target}" should be one of ${targets.join(', ')}`);
         }
-        if ((ref = userConfig.amp) === null || ref === void 0 ? void 0 : ref.canonicalBase) {
+        if ((ref4 = userConfig.amp) === null || ref4 === void 0 ? void 0 : ref4.canonicalBase) {
             const { canonicalBase  } = userConfig.amp || {
             };
             userConfig.amp = userConfig.amp || {

@@ -26,13 +26,13 @@ function getPageHandler(ctx) {
         let Component;
         let App;
         let config;
-        let Document;
-        let Error;
+        let Document1;
+        let Error1;
         let notFoundMod;
         let getStaticProps;
         let getStaticPaths;
         let getServerSideProps;
-        [getStaticProps, getServerSideProps, getStaticPaths, Component, App, config, { default: Document  }, { default: Error  }, notFoundMod, ] = await Promise.all([
+        [getStaticProps, getServerSideProps, getStaticPaths, Component, App, config, { default: Document1  }, { default: Error1  }, notFoundMod, ] = await Promise.all([
             pageGetStaticProps,
             pageGetServerSideProps,
             pageGetStaticPaths,
@@ -51,7 +51,7 @@ function getPageHandler(ctx) {
         }, 'cookies', (0, _apiUtils).getCookieParser(req.headers));
         const options = {
             App,
-            Document,
+            Document: Document1,
             buildManifest,
             getStaticProps,
             getServerSideProps,
@@ -200,7 +200,7 @@ function getPageHandler(ctx) {
                             res.end('{"notFound":true}');
                             return null;
                         }
-                        const NotFoundComponent = notFoundMod ? notFoundMod.default : Error;
+                        const NotFoundComponent = notFoundMod ? notFoundMod.default : Error1;
                         const errPathname = notFoundMod ? '/404' : '/_error';
                         const result2 = await (0, _render).renderToHTML(req, res, errPathname, parsedUrl.query, Object.assign({
                         }, options, {
@@ -281,7 +281,7 @@ function getPageHandler(ctx) {
                         getStaticProps: undefined,
                         getStaticPaths: undefined,
                         getServerSideProps: undefined,
-                        Component: Error,
+                        Component: Error1,
                         err: err,
                         // Short-circuit rendering:
                         isDataReq: true
@@ -302,7 +302,7 @@ function getPageHandler(ctx) {
                 getStaticProps: undefined,
                 getStaticPaths: undefined,
                 getServerSideProps: undefined,
-                Component: Error,
+                Component: Error1,
                 err: res.statusCode === 404 ? undefined : err
             }));
             return result2 ? await (0, _utils2).resultsToString([

@@ -21,10 +21,10 @@ function _interopRequireDefault(obj) {
         default: obj
     };
 }
-var ref6, ref1, ref2, ref3;
+var ref, ref1, ref2, ref3;
 const eslintOptions = (args, defaultCacheLocation)=>({
         overrideConfigFile: args['--config'] || null,
-        extensions: (ref6 = args['--ext']) !== null && ref6 !== void 0 ? ref6 : [
+        extensions: (ref = args['--ext']) !== null && ref !== void 0 ? ref : [
             '.js',
             '.jsx',
             '.ts',
@@ -44,7 +44,7 @@ const eslintOptions = (args, defaultCacheLocation)=>({
     })
 ;
 const nextLint = async (argv)=>{
-    var ref;
+    var ref4;
     const validArgs = {
         // Types
         '--help': Boolean,
@@ -160,8 +160,8 @@ const nextLint = async (argv)=>{
         (0, _utils).printAndExit(`> No such directory exists as the project root: ${baseDir}`);
     }
     const nextConfig = await (0, _config).default(_constants1.PHASE_PRODUCTION_BUILD, baseDir);
-    var ref4;
-    const dirs = (ref4 = args['--dir']) !== null && ref4 !== void 0 ? ref4 : (ref = nextConfig.eslint) === null || ref === void 0 ? void 0 : ref.dirs;
+    var ref5;
+    const dirs = (ref5 = args['--dir']) !== null && ref5 !== void 0 ? ref5 : (ref4 = nextConfig.eslint) === null || ref4 === void 0 ? void 0 : ref4.dirs;
     const lintDirs = (dirs !== null && dirs !== void 0 ? dirs : _constants.ESLINT_DEFAULT_DIRS).reduce((res, d)=>{
         const currDir = (0, _path).join(baseDir, d);
         if (!(0, _fs).existsSync(currDir)) return res;
@@ -169,8 +169,8 @@ const nextLint = async (argv)=>{
         return res;
     }, []);
     const reportErrorsOnly = Boolean(args['--quiet']);
-    var ref5;
-    const maxWarnings = (ref5 = args['--max-warnings']) !== null && ref5 !== void 0 ? ref5 : -1;
+    var ref6;
+    const maxWarnings = (ref6 = args['--max-warnings']) !== null && ref6 !== void 0 ? ref6 : -1;
     const formatter = args['--format'] || null;
     const strict = Boolean(args['--strict']);
     const distDir = (0, _path).join(baseDir, nextConfig.distDir);

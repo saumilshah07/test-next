@@ -42,10 +42,10 @@ if (target === _shared.TARGET.CONSOLE) {
 } else {
     traceTargetReporter = _toTelemetry.default;
 }
-const reporter1 = new MultiReporter([
+const reporter = new MultiReporter([
     _toJson.default,
     traceTargetReporter
 ]);
-exports.reporter = reporter1;
+exports.reporter = reporter;
 
 //# sourceMappingURL=index.js.map

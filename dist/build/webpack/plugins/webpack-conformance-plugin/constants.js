@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CONFORMANCE_WARNING_PREFIX = exports.CONFORMANCE_ERROR_PREFIX = void 0;
+exports.CONFORMANCE_ERROR_PREFIX = exports.CONFORMANCE_WARNING_PREFIX = void 0;
 var _chalk = _interopRequireDefault(require("chalk"));
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {

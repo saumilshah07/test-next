@@ -401,16 +401,16 @@ function clearPreviewData(res) {
     return res;
 }
 class ApiError extends Error {
-    constructor(statusCode1, message1){
-        super(message1);
-        this.statusCode = statusCode1;
+    constructor(statusCode, message){
+        super(message);
+        this.statusCode = statusCode;
     }
 }
 exports.ApiError = ApiError;
-function sendError(res, statusCode, message) {
-    res.statusCode = statusCode;
-    res.statusMessage = message;
-    res.end(message);
+function sendError(res, statusCode1, message1) {
+    res.statusCode = statusCode1;
+    res.statusMessage = message1;
+    res.end(message1);
 }
 function setLazyProp({ req  }, prop, getter) {
     const opts = {

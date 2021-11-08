@@ -23,7 +23,7 @@ async function nextBabelLoader(parentTrace, inputSource, inputSourceMap) {
         outputSourceMap
     ];
 }
-const nextBabelLoaderOuter = function nextBabelLoaderOuter(inputSource, inputSourceMap) {
+const nextBabelLoaderOuter = function nextBabelLoaderOuter1(inputSource, inputSourceMap) {
     const callback = this.async();
     const loaderSpan = this.currentTraceSpan.traceChild('next-babel-turbo-loader');
     loaderSpan.traceAsyncFn(()=>nextBabelLoader.call(this, loaderSpan, inputSource, inputSourceMap)

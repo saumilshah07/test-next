@@ -97,8 +97,8 @@ class FontStylesheetGatheringPlugin {
                         }
                         this.gatheredStylesheets.push(props.href);
                         if (_webpack.isWebpack5) {
-                            var ref, ref2;
-                            const buildInfo = parser === null || parser === void 0 ? void 0 : (ref = parser.state) === null || ref === void 0 ? void 0 : (ref2 = ref.module) === null || ref2 === void 0 ? void 0 : ref2.buildInfo;
+                            var ref5, ref6;
+                            const buildInfo = parser === null || parser === void 0 ? void 0 : (ref5 = parser.state) === null || ref5 === void 0 ? void 0 : (ref6 = ref5.module) === null || ref6 === void 0 ? void 0 : ref6.buildInfo;
                             if (buildInfo) {
                                 buildInfo.valueDependencies.set(_constants.FONT_MANIFEST, this.gatheredStylesheets);
                             }
@@ -137,8 +137,8 @@ class FontStylesheetGatheringPlugin {
                 if (_webpack.isWebpack5) {
                     const fontUrls = new Set();
                     modules.forEach((module)=>{
-                        var ref, ref3;
-                        const fontDependencies = module === null || module === void 0 ? void 0 : (ref = module.buildInfo) === null || ref === void 0 ? void 0 : (ref3 = ref.valueDependencies) === null || ref3 === void 0 ? void 0 : ref3.get(_constants.FONT_MANIFEST);
+                        var ref7, ref8;
+                        const fontDependencies = module === null || module === void 0 ? void 0 : (ref7 = module.buildInfo) === null || ref7 === void 0 ? void 0 : (ref8 = ref7.valueDependencies) === null || ref8 === void 0 ? void 0 : ref8.get(_constants.FONT_MANIFEST);
                         if (fontDependencies) {
                             fontDependencies.forEach((v)=>fontUrls.add(v)
                             );

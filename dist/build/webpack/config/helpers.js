@@ -9,7 +9,7 @@ function _interopRequireDefault(obj) {
         default: obj
     };
 }
-const loader = (0, _lodashCurry).default(function loader(rule, config) {
+const loader = (0, _lodashCurry).default(function loader1(rule, config) {
     if (!config.module) {
         config.module = {
             rules: []
@@ -27,7 +27,7 @@ const loader = (0, _lodashCurry).default(function loader(rule, config) {
     return config;
 });
 exports.loader = loader;
-const unshiftLoader = (0, _lodashCurry).default(function unshiftLoader(rule, config) {
+const unshiftLoader = (0, _lodashCurry).default(function unshiftLoader1(rule, config) {
     if (!config.module) {
         config.module = {
             rules: []
@@ -45,7 +45,7 @@ const unshiftLoader = (0, _lodashCurry).default(function unshiftLoader(rule, con
     return config;
 });
 exports.unshiftLoader = unshiftLoader;
-const plugin = (0, _lodashCurry).default(function plugin(p, config) {
+const plugin = (0, _lodashCurry).default(function plugin1(p, config) {
     if (!config.plugins) {
         config.plugins = [];
     }

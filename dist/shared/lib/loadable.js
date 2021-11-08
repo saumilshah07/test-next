@@ -121,9 +121,9 @@ function createLoadableComponent(loadFn, options) {
     return _react.default.forwardRef(LoadableComponent);
 }
 class LoadableSubscription {
-    constructor(loadFn, opts1){
+    constructor(loadFn, opts){
         this._loadFn = loadFn;
-        this._opts = opts1;
+        this._opts = opts;
         this._callbacks = new Set();
         this._delay = null;
         this._timeout = null;
@@ -139,25 +139,25 @@ class LoadableSubscription {
             pastDelay: false,
             timedOut: false
         };
-        const { _res: res , _opts: opts  } = this;
+        const { _res: res , _opts: opts1  } = this;
         if (res.loading) {
-            if (typeof opts.delay === 'number') {
-                if (opts.delay === 0) {
+            if (typeof opts1.delay === 'number') {
+                if (opts1.delay === 0) {
                     this._state.pastDelay = true;
                 } else {
                     this._delay = setTimeout(()=>{
                         this._update({
                             pastDelay: true
                         });
-                    }, opts.delay);
+                    }, opts1.delay);
                 }
             }
-            if (typeof opts.timeout === 'number') {
+            if (typeof opts1.timeout === 'number') {
                 this._timeout = setTimeout(()=>{
                     this._update({
                         timedOut: true
                     });
-                }, opts.timeout);
+                }, opts1.timeout);
             }
         }
         this._res.promise.then(()=>{
@@ -197,8 +197,8 @@ class LoadableSubscription {
         };
     }
 }
-function Loadable(opts) {
-    return createLoadableComponent(load, opts);
+function Loadable(opts1) {
+    return createLoadableComponent(load, opts1);
 }
 function flushInitializers(initializers, ids) {
     let promises = [];

@@ -425,8 +425,8 @@ async function exportApp(dir, options, configuration) {
                     httpAgentOptions: nextConfig.httpAgentOptions
                 });
                 for (const validation of result.ampValidations || []){
-                    const { page , result: ampValidationResult  } = validation;
-                    ampValidations[page] = ampValidationResult;
+                    const { page: page1 , result: ampValidationResult  } = validation;
+                    ampValidations[page1] = ampValidationResult;
                     hadValidationError = hadValidationError || Array.isArray(ampValidationResult === null || ampValidationResult === void 0 ? void 0 : ampValidationResult.errors) && ampValidationResult.errors.length > 0;
                 }
                 renderError = renderError || !!result.error;

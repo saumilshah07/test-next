@@ -8,23 +8,23 @@ var _report = require("./report");
 const NUM_OF_MICROSEC_IN_SEC = BigInt('1000');
 const getId = ()=>(0, _crypto).randomBytes(8).toString('hex')
 ;
-var SpanStatus1;
-exports.SpanStatus = SpanStatus1;
-(function(SpanStatus) {
-    SpanStatus[SpanStatus["Started"] = 0] = "Started";
-    SpanStatus[SpanStatus["Stopped"] = 1] = "Stopped";
-})(SpanStatus1 || (exports.SpanStatus = SpanStatus1 = {
+var SpanStatus;
+exports.SpanStatus = SpanStatus;
+(function(SpanStatus1) {
+    SpanStatus1[SpanStatus1["Started"] = 0] = "Started";
+    SpanStatus1[SpanStatus1["Stopped"] = 1] = "Stopped";
+})(SpanStatus || (exports.SpanStatus = SpanStatus = {
 }));
 class Span {
-    constructor(name2, parentId1, attrs2){
-        this.name = name2;
-        this.parentId = parentId1;
+    constructor(name1, parentId, attrs1){
+        this.name = name1;
+        this.parentId = parentId;
         this.duration = null;
-        this.attrs = attrs2 ? {
-            ...attrs2
+        this.attrs = attrs1 ? {
+            ...attrs1
         } : {
         };
-        this.status = SpanStatus1.Started;
+        this.status = SpanStatus.Started;
         this.id = getId();
         this._start = process.hrtime.bigint();
     }
@@ -35,15 +35,15 @@ class Span {
     stop() {
         const end = process.hrtime.bigint();
         const duration = (end - this._start) / NUM_OF_MICROSEC_IN_SEC;
-        this.status = SpanStatus1.Stopped;
+        this.status = SpanStatus.Stopped;
         if (duration > Number.MAX_SAFE_INTEGER) {
             throw new Error(`Duration is too long to express as float64: ${duration}`);
         }
         const timestamp = this._start / NUM_OF_MICROSEC_IN_SEC;
         _report.reporter.report(this.name, Number(duration), Number(timestamp), this.id, this.parentId, this.attrs);
     }
-    traceChild(name1, attrs1) {
-        return new Span(name1, this.id, attrs1);
+    traceChild(name, attrs) {
+        return new Span(name, this.id, attrs);
     }
     setAttribute(key, value) {
         this.attrs[key] = String(value);
@@ -55,17 +55,17 @@ class Span {
             this.stop();
         }
     }
-    async traceAsyncFn(fn1) {
+    async traceAsyncFn(fn) {
         try {
-            return await fn1();
+            return await fn();
         } finally{
             this.stop();
         }
     }
 }
 exports.Span = Span;
-const trace = (name, parentId, attrs)=>{
-    return new Span(name, parentId, attrs);
+const trace = (name2, parentId1, attrs2)=>{
+    return new Span(name2, parentId1, attrs2);
 };
 exports.trace = trace;
 const flushAllTraces = ()=>_report.reporter.flushAll()

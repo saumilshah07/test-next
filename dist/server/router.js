@@ -43,8 +43,8 @@ class Router {
     setDynamicRoutes(routes = []) {
         this.dynamicRoutes = routes;
     }
-    addFsRoute(fsRoute1) {
-        this.fsRoutes.unshift(fsRoute1);
+    addFsRoute(fsRoute) {
+        this.fsRoutes.unshift(fsRoute);
     }
     async execute(req, res, parsedUrl) {
         // memoize page check calls so we don't duplicate checks for pages

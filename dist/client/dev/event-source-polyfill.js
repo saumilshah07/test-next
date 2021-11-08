@@ -7,12 +7,12 @@ exports.default = void 0;
 // Available under MIT License (MIT)
 // Only tries to support IE11 and nothing below
 var document = window.document;
-var Response = window.Response;
-var TextDecoder = window.TextDecoder;
-var TextEncoder = window.TextEncoder;
-var AbortController = window.AbortController;
-if (AbortController == undefined) {
-    AbortController = function() {
+var Response1 = window.Response;
+var TextDecoder1 = window.TextDecoder;
+var TextEncoder1 = window.TextEncoder;
+var AbortController1 = window.AbortController;
+if (AbortController1 == undefined) {
+    AbortController1 = function() {
         this.signal = null;
         this.abort = function() {
         };
@@ -35,7 +35,7 @@ TextDecoderPolyfill.prototype.decode = function(octets) {
         }
         throw new Error();
     }
-    function octetsCount1(bitsNeeded, codePoint) {
+    function octetsCount(bitsNeeded, codePoint) {
         if (bitsNeeded === 6 * 1) {
             return codePoint >> 6 > 15 ? 3 : codePoint > 31 ? 2 : 1;
         }
@@ -49,59 +49,59 @@ TextDecoderPolyfill.prototype.decode = function(octets) {
     }
     var REPLACER = 65533;
     var string = '';
-    var bitsNeeded1 = this.bitsNeeded;
-    var codePoint1 = this.codePoint;
+    var bitsNeeded = this.bitsNeeded;
+    var codePoint = this.codePoint;
     for(var i = 0; i < octets.length; i += 1){
         var octet = octets[i];
-        if (bitsNeeded1 !== 0) {
-            if (octet < 128 || octet > 191 || !valid(codePoint1 << 6 | octet & 63, bitsNeeded1 - 6, octetsCount1(bitsNeeded1, codePoint1))) {
-                bitsNeeded1 = 0;
-                codePoint1 = REPLACER;
-                string += String.fromCharCode(codePoint1);
+        if (bitsNeeded !== 0) {
+            if (octet < 128 || octet > 191 || !valid(codePoint << 6 | octet & 63, bitsNeeded - 6, octetsCount(bitsNeeded, codePoint))) {
+                bitsNeeded = 0;
+                codePoint = REPLACER;
+                string += String.fromCharCode(codePoint);
             }
         }
-        if (bitsNeeded1 === 0) {
+        if (bitsNeeded === 0) {
             if (octet >= 0 && octet <= 127) {
-                bitsNeeded1 = 0;
-                codePoint1 = octet;
+                bitsNeeded = 0;
+                codePoint = octet;
             } else if (octet >= 192 && octet <= 223) {
-                bitsNeeded1 = 6 * 1;
-                codePoint1 = octet & 31;
+                bitsNeeded = 6 * 1;
+                codePoint = octet & 31;
             } else if (octet >= 224 && octet <= 239) {
-                bitsNeeded1 = 6 * 2;
-                codePoint1 = octet & 15;
+                bitsNeeded = 6 * 2;
+                codePoint = octet & 15;
             } else if (octet >= 240 && octet <= 247) {
-                bitsNeeded1 = 6 * 3;
-                codePoint1 = octet & 7;
+                bitsNeeded = 6 * 3;
+                codePoint = octet & 7;
             } else {
-                bitsNeeded1 = 0;
-                codePoint1 = REPLACER;
+                bitsNeeded = 0;
+                codePoint = REPLACER;
             }
-            if (bitsNeeded1 !== 0 && !valid(codePoint1, bitsNeeded1, octetsCount1(bitsNeeded1, codePoint1))) {
-                bitsNeeded1 = 0;
-                codePoint1 = REPLACER;
+            if (bitsNeeded !== 0 && !valid(codePoint, bitsNeeded, octetsCount(bitsNeeded, codePoint))) {
+                bitsNeeded = 0;
+                codePoint = REPLACER;
             }
         } else {
-            bitsNeeded1 -= 6;
-            codePoint1 = codePoint1 << 6 | octet & 63;
+            bitsNeeded -= 6;
+            codePoint = codePoint << 6 | octet & 63;
         }
-        if (bitsNeeded1 === 0) {
-            if (codePoint1 <= 65535) {
-                string += String.fromCharCode(codePoint1);
+        if (bitsNeeded === 0) {
+            if (codePoint <= 65535) {
+                string += String.fromCharCode(codePoint);
             } else {
-                string += String.fromCharCode(55296 + (codePoint1 - 65535 - 1 >> 10));
-                string += String.fromCharCode(56320 + (codePoint1 - 65535 - 1 & 1023));
+                string += String.fromCharCode(55296 + (codePoint - 65535 - 1 >> 10));
+                string += String.fromCharCode(56320 + (codePoint - 65535 - 1 & 1023));
             }
         }
     }
-    this.bitsNeeded = bitsNeeded1;
-    this.codePoint = codePoint1;
+    this.bitsNeeded = bitsNeeded;
+    this.codePoint = codePoint;
     return string;
 };
 // Firefox < 38 throws an error with stream option
 var supportsStreamOption = function() {
     try {
-        return new TextDecoder().decode(new TextEncoder().encode('test'), {
+        return new TextDecoder1().decode(new TextEncoder1().encode('test'), {
             stream: true
         }) === 'test';
     } catch (error) {
@@ -110,8 +110,8 @@ var supportsStreamOption = function() {
     return false;
 };
 // IE, Edge
-if (TextDecoder == undefined || TextEncoder == undefined || !supportsStreamOption()) {
-    TextDecoder = TextDecoderPolyfill;
+if (TextDecoder1 == undefined || TextEncoder1 == undefined || !supportsStreamOption()) {
+    TextDecoder1 = TextDecoderPolyfill;
 }
 var k = function() {
 };
@@ -339,7 +339,7 @@ HeadersPolyfill.prototype.get = function(name) {
 };
 function XHRTransport() {
 }
-XHRTransport.prototype.open = function(xhr, onStartCallback, onProgressCallback, onFinishCallback, url, withCredentials, headers1) {
+XHRTransport.prototype.open = function(xhr, onStartCallback, onProgressCallback, onFinishCallback, url, withCredentials, headers) {
     xhr.open('GET', url);
     var offset = 0;
     xhr.onprogress = function() {
@@ -353,8 +353,8 @@ XHRTransport.prototype.open = function(xhr, onStartCallback, onProgressCallback,
             var status = xhr.status;
             var statusText = xhr.statusText;
             var contentType = xhr.getResponseHeader('Content-Type');
-            var headers = xhr.getAllResponseHeaders();
-            onStartCallback(status, statusText, contentType, new HeadersPolyfill(headers), function() {
+            var headers1 = xhr.getAllResponseHeaders();
+            onStartCallback(status, statusText, contentType, new HeadersPolyfill(headers1), function() {
                 xhr.abort();
             });
         } else if (xhr.readyState === 4) {
@@ -363,28 +363,28 @@ XHRTransport.prototype.open = function(xhr, onStartCallback, onProgressCallback,
     };
     xhr.withCredentials = withCredentials;
     xhr.responseType = 'text';
-    for(var name in headers1){
-        if (Object.prototype.hasOwnProperty.call(headers1, name)) {
-            xhr.setRequestHeader(name, headers1[name]);
+    for(var name in headers){
+        if (Object.prototype.hasOwnProperty.call(headers, name)) {
+            xhr.setRequestHeader(name, headers[name]);
         }
     }
     xhr.send();
 };
-function HeadersWrapper(headers) {
-    this._headers = headers;
+function HeadersWrapper(headers2) {
+    this._headers = headers2;
 }
 HeadersWrapper.prototype.get = function(name) {
     return this._headers.get(name);
 };
 function FetchTransport() {
 }
-FetchTransport.prototype.open = function(xhr, onStartCallback, onProgressCallback, onFinishCallback, url, withCredentials, headers) {
-    var controller = new AbortController();
+FetchTransport.prototype.open = function(xhr, onStartCallback, onProgressCallback, onFinishCallback, url, withCredentials, headers2) {
+    var controller = new AbortController1();
     var signal = controller.signal // see #120
     ;
-    var textDecoder = new TextDecoder();
+    var textDecoder = new TextDecoder1();
     fetch(url, {
-        headers: headers,
+        headers: headers2,
         credentials: withCredentials ? 'include' : 'same-origin',
         signal: signal,
         cache: 'no-store'
@@ -421,7 +421,7 @@ FetchTransport.prototype.open = function(xhr, onStartCallback, onProgressCallbac
         return Promise.reject(error);
     });
 };
-function EventTarget() {
+function EventTarget1() {
     this._listeners = Object.create(null);
 }
 function throwError(e) {
@@ -429,7 +429,7 @@ function throwError(e) {
         throw e;
     }, 0);
 }
-EventTarget.prototype.dispatchEvent = function(event) {
+EventTarget1.prototype.dispatchEvent = function(event) {
     event.target = this;
     var typeListeners = this._listeners[event.type];
     if (typeListeners != undefined) {
@@ -448,7 +448,7 @@ EventTarget.prototype.dispatchEvent = function(event) {
         }
     }
 };
-EventTarget.prototype.addEventListener = function(type, listener) {
+EventTarget1.prototype.addEventListener = function(type, listener) {
     type = String(type);
     var listeners = this._listeners;
     var typeListeners = listeners[type];
@@ -466,7 +466,7 @@ EventTarget.prototype.addEventListener = function(type, listener) {
         typeListeners.push(listener);
     }
 };
-EventTarget.prototype.removeEventListener = function(type, listener) {
+EventTarget1.prototype.removeEventListener = function(type, listener) {
     type = String(type);
     var listeners = this._listeners;
     var typeListeners = listeners[type];
@@ -484,23 +484,23 @@ EventTarget.prototype.removeEventListener = function(type, listener) {
         }
     }
 };
-function Event(type) {
+function Event1(type) {
     this.type = type;
     this.target = undefined;
 }
-function MessageEvent(type, options) {
-    Event.call(this, type);
+function MessageEvent1(type, options) {
+    Event1.call(this, type);
     this.data = options.data;
     this.lastEventId = options.lastEventId;
 }
-MessageEvent.prototype = Object.create(Event.prototype);
+MessageEvent1.prototype = Object.create(Event1.prototype);
 function ConnectionEvent(type, options) {
-    Event.call(this, type);
+    Event1.call(this, type);
     this.status = options.status;
     this.statusText = options.statusText;
     this.headers = options.headers;
 }
-ConnectionEvent.prototype = Object.create(Event.prototype);
+ConnectionEvent.prototype = Object.create(Event1.prototype);
 var WAITING = -1;
 var CONNECTING = 0;
 var OPEN = 1;
@@ -533,7 +533,7 @@ var fire = function(that, f, event) {
     }
 };
 function EventSourcePolyfill(url, options) {
-    EventTarget.call(this);
+    EventTarget1.call(this);
     this.onopen = undefined;
     this.onmessage = undefined;
     this.onerror = undefined;
@@ -543,7 +543,7 @@ function EventSourcePolyfill(url, options) {
     this._close = undefined;
     start(this, url, options);
 }
-var isFetchSupported = fetch != undefined && Response != undefined && 'body' in Response.prototype;
+var isFetchSupported = fetch != undefined && Response1 != undefined && 'body' in Response1.prototype;
 function start(es, url, options) {
     url = String(url);
     var withCredentials = options != undefined && Boolean(options.withCredentials);
@@ -566,7 +566,7 @@ function start(es, url, options) {
     var state = FIELD_START;
     var fieldStart = 0;
     var valueStart = 0;
-    var onStart = function(status, statusText, contentType, headers, cancel) {
+    var onStart = function(status, statusText, contentType, headers3, cancel) {
         if (currentState === CONNECTING) {
             cancelFunction = cancel;
             if (status === 200 && contentType != undefined && contentTypeRegExp.test(contentType)) {
@@ -577,7 +577,7 @@ function start(es, url, options) {
                 var event = new ConnectionEvent('open', {
                     status: status,
                     statusText: statusText,
-                    headers: headers
+                    headers: headers3
                 });
                 es.dispatchEvent(event);
                 fire(es, es.onopen, event);
@@ -596,7 +596,7 @@ function start(es, url, options) {
                 var event = new ConnectionEvent('error', {
                     status: status,
                     statusText: statusText,
-                    headers: headers
+                    headers: headers3
                 });
                 es.dispatchEvent(event);
                 fire(es, es.onerror, event);
@@ -658,7 +658,7 @@ function start(es, url, options) {
                                 if (eventTypeBuffer === '') {
                                     eventTypeBuffer = 'message';
                                 }
-                                var event = new MessageEvent(eventTypeBuffer, {
+                                var event = new MessageEvent1(eventTypeBuffer, {
                                     data: dataBuffer.slice(1),
                                     lastEventId: lastEventIdBuffer
                                 });
@@ -704,7 +704,7 @@ function start(es, url, options) {
             }, retry);
             retry = clampDuration(Math.min(initialRetry * 16, retry * 2));
             es.readyState = CONNECTING;
-            var event = new Event('error');
+            var event = new Event1('error');
             es.dispatchEvent(event);
             fire(es, es.onerror, event);
         }
@@ -779,7 +779,7 @@ function start(es, url, options) {
     es._close = close;
     onTimeout();
 }
-EventSourcePolyfill.prototype = Object.create(EventTarget.prototype);
+EventSourcePolyfill.prototype = Object.create(EventTarget1.prototype);
 EventSourcePolyfill.prototype.CONNECTING = CONNECTING;
 EventSourcePolyfill.prototype.OPEN = OPEN;
 EventSourcePolyfill.prototype.CLOSED = CLOSED;

@@ -12,7 +12,7 @@ function _interopRequireDefault(obj) {
     };
 }
 const isWindows = process.platform === 'win32' || _isWsl.default;
-const base = (0, _lodashCurry).default(function base(ctx, config) {
+const base = (0, _lodashCurry).default(function base1(ctx, config) {
     config.mode = ctx.isDevelopment ? 'development' : 'production';
     config.name = ctx.isServer ? 'server' : 'client';
     if (_webpack.isWebpack5) {

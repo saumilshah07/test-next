@@ -10,7 +10,6 @@ var _jestWorker = require("jest-worker");
 var _amphtmlValidator = _interopRequireDefault(require("next/dist/compiled/amphtml-validator"));
 var _findUp = _interopRequireDefault(require("next/dist/compiled/find-up"));
 var _path = require("path");
-var _react = _interopRequireDefault(require("react"));
 var _watchpack = _interopRequireDefault(require("watchpack"));
 var _output = require("../../build/output");
 var _constants = require("../../lib/constants");
@@ -196,12 +195,12 @@ class DevServer extends _nextServer.default {
                     routedPages.push(pageName);
                 }
                 try {
-                    var ref;
+                    var ref3;
                     // we serve a separate manifest with all pages for the client in
                     // dev mode so that we can match a page after a rewrite on the client
                     // before it has been built and is populated in the _buildManifest
                     const sortedRoutes = (0, _utils).getSortedRoutes(routedPages);
-                    if (!((ref = this.sortedRoutes) === null || ref === void 0 ? void 0 : ref.every((val, idx)=>val === sortedRoutes[idx]
+                    if (!((ref3 = this.sortedRoutes) === null || ref3 === void 0 ? void 0 : ref3.every((val, idx)=>val === sortedRoutes[idx]
                     ))) {
                         // emit the change so clients fetch the update
                         this.hotReloader.send(undefined, {
@@ -287,10 +286,10 @@ class DevServer extends _nextServer.default {
             await this.hotReloader.stop();
         }
     }
-    async hasPage(pathname1) {
+    async hasPage(pathname) {
         let normalizedPath;
         try {
-            normalizedPath = (0, _normalizePagePath).normalizePagePath(pathname1);
+            normalizedPath = (0, _normalizePagePath).normalizePagePath(pathname);
         } catch (err) {
             console.error(err);
             // if normalizing the page fails it means it isn't valid
@@ -301,9 +300,9 @@ class DevServer extends _nextServer.default {
         const pageFile = await (0, _findPageFile).findPageFile(this.pagesDir, normalizedPath, this.nextConfig.pageExtensions);
         return !!pageFile;
     }
-    async _beforeCatchAllRender(req2, res2, params1, parsedUrl2) {
-        const { pathname  } = parsedUrl2;
-        const pathParts = params1.path || [];
+    async _beforeCatchAllRender(req, res, params, parsedUrl) {
+        const { pathname  } = parsedUrl;
+        const pathParts = params.path || [];
         const path = `/${pathParts.join('/')}`;
         // check for a public file, throwing error if there's a
         // conflicting page
@@ -316,55 +315,55 @@ class DevServer extends _nextServer.default {
         if (await this.hasPublicFile(decodedPath)) {
             if (await this.hasPage(pathname)) {
                 const err = new Error(`A conflicting public file and page file was found for path ${pathname} https://nextjs.org/docs/messages/conflicting-public-file-page`);
-                res2.statusCode = 500;
-                await this.renderError(err, req2, res2, pathname, {
+                res.statusCode = 500;
+                await this.renderError(err, req, res, pathname, {
                 });
                 return true;
             }
-            await this.servePublic(req2, res2, pathParts);
+            await this.servePublic(req, res, pathParts);
             return true;
         }
         return false;
     }
-    async run(req1, res1, parsedUrl1) {
-        var ref;
+    async run(req, res, parsedUrl) {
+        var ref4;
         await this.devReady;
         const { basePath  } = this.nextConfig;
         let originalPathname = null;
-        if (basePath && ((ref = parsedUrl1.pathname) === null || ref === void 0 ? void 0 : ref.startsWith(basePath))) {
+        if (basePath && ((ref4 = parsedUrl.pathname) === null || ref4 === void 0 ? void 0 : ref4.startsWith(basePath))) {
             // strip basePath before handling dev bundles
             // If replace ends up replacing the full url it'll be `undefined`, meaning we have to default it to `/`
-            originalPathname = parsedUrl1.pathname;
-            parsedUrl1.pathname = parsedUrl1.pathname.slice(basePath.length) || '/';
+            originalPathname = parsedUrl.pathname;
+            parsedUrl.pathname = parsedUrl.pathname.slice(basePath.length) || '/';
         }
-        const { pathname  } = parsedUrl1;
+        const { pathname  } = parsedUrl;
         if (pathname.startsWith('/_next')) {
             if (await (0, _fileExists).fileExists((0, _path).join(this.publicDir, '_next'))) {
                 throw new Error(_constants.PUBLIC_DIR_MIDDLEWARE_CONFLICT);
             }
         }
-        const { finished =false  } = await this.hotReloader.run(req1, res1, parsedUrl1);
+        const { finished =false  } = await this.hotReloader.run(req, res, parsedUrl);
         if (finished) {
             return;
         }
         if (originalPathname) {
             // restore the path before continuing so that custom-routes can accurately determine
             // if they should match against the basePath or not
-            parsedUrl1.pathname = originalPathname;
+            parsedUrl.pathname = originalPathname;
         }
         try {
-            return await super.run(req1, res1, parsedUrl1);
+            return await super.run(req, res, parsedUrl);
         } catch (err) {
-            res1.statusCode = 500;
+            res.statusCode = 500;
             try {
                 this.logErrorWithOriginalStack(err).catch(()=>{
                 });
-                return await this.renderError(err, req1, res1, pathname, {
+                return await this.renderError(err, req, res, pathname, {
                     __NEXT_PAGE: (err === null || err === void 0 ? void 0 : err.page) || pathname
                 });
             } catch (internalErr) {
                 console.error(internalErr);
-                res1.end('Internal Server Error');
+                res.end('Internal Server Error');
             }
         }
     }
@@ -376,10 +375,10 @@ class DevServer extends _nextServer.default {
                 const frames = (0, _parseStack).parseStack(err.stack);
                 const frame = frames[0];
                 if (frame.lineNumber && (frame === null || frame === void 0 ? void 0 : frame.file)) {
-                    var ref, ref3, ref4, ref5;
-                    const compilation = (ref = this.hotReloader) === null || ref === void 0 ? void 0 : (ref3 = ref.serverStats) === null || ref3 === void 0 ? void 0 : ref3.compilation;
+                    var ref5, ref6, ref7, ref8;
+                    const compilation = (ref5 = this.hotReloader) === null || ref5 === void 0 ? void 0 : (ref6 = ref5.serverStats) === null || ref6 === void 0 ? void 0 : ref6.compilation;
                     const moduleId = frame.file.replace(/^(webpack-internal:\/\/\/|file:\/\/)/, '');
-                    const source = await (0, _middleware).getSourceById(!!((ref4 = frame.file) === null || ref4 === void 0 ? void 0 : ref4.startsWith(_path.sep)) || !!((ref5 = frame.file) === null || ref5 === void 0 ? void 0 : ref5.startsWith('file:')), moduleId, compilation, this.hotReloader.isWebpack5);
+                    const source = await (0, _middleware).getSourceById(!!((ref7 = frame.file) === null || ref7 === void 0 ? void 0 : ref7.startsWith(_path.sep)) || !!((ref8 = frame.file) === null || ref8 === void 0 ? void 0 : ref8.startsWith('file:')), moduleId, compilation, this.hotReloader.isWebpack5);
                     const originalFrame = await (0, _middleware).createOriginalStackFrame({
                         line: frame.lineNumber,
                         column: frame.column,
@@ -531,20 +530,20 @@ class DevServer extends _nextServer.default {
             fallbackMode: fallback === 'blocking' ? 'blocking' : fallback === true ? 'static' : false
         };
     }
-    async ensureApiPage(pathname2) {
-        return this.hotReloader.ensurePage(pathname2);
+    async ensureApiPage(pathname) {
+        return this.hotReloader.ensurePage(pathname);
     }
-    async findPageComponents(pathname3, query = {
+    async findPageComponents(pathname, query = {
     }, params = null) {
         await this.devReady;
-        const compilationErr = await this.getCompilationError(pathname3);
+        const compilationErr = await this.getCompilationError(pathname);
         if (compilationErr) {
             // Wrap build errors so that they don't get logged again
             throw new _nextServer.WrappedBuildError(compilationErr);
         }
         try {
-            await this.hotReloader.ensurePage(pathname3);
-            return super.findPageComponents(pathname3, query, params);
+            await this.hotReloader.ensurePage(pathname);
+            return super.findPageComponents(pathname, query, params);
         } catch (err) {
             if (err.code !== 'ENOENT') {
                 throw err;
@@ -562,9 +561,9 @@ class DevServer extends _nextServer.default {
     setImmutableAssetCacheControl(res) {
         res.setHeader('Cache-Control', 'no-store, must-revalidate');
     }
-    servePublic(req, res3, pathParts) {
+    servePublic(req, res, pathParts) {
         const p = (0, _path).join(this.publicDir, ...pathParts);
-        return this.serveStatic(req, res3, p);
+        return this.serveStatic(req, res, p);
     }
     async hasPublicFile(path) {
         try {

@@ -1,5 +1,5 @@
 "use strict";
-const isOldIE = function isOldIE() {
+const isOldIE = function isOldIE1() {
     let memo;
     return function memorize() {
         if (typeof memo === 'undefined') {
@@ -13,7 +13,7 @@ const isOldIE = function isOldIE() {
         return memo;
     };
 }();
-const getTarget = function getTarget() {
+const getTarget = function getTarget1() {
     const memo = {
     };
     return function memorize(target) {
@@ -108,7 +108,7 @@ function removeStyleElement(style) {
     }
     style.parentNode.removeChild(style);
 }
-/* istanbul ignore next  */ const replaceText = function replaceText() {
+/* istanbul ignore next  */ const replaceText = function replaceText1() {
     const textStore = [];
     return function replace(index, replacement) {
         textStore[index] = replacement;

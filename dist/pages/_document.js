@@ -137,7 +137,7 @@ function getScripts(context, props, files) {
         }));
     });
 }
-class Document extends _react.Component {
+class Document1 extends _react.Component {
     /**
    * `getInitialProps` hook returns the context object with the addition of `renderPage`.
    * `renderPage` callback executes `React` rendering logic synchronously to support server-rendering wrappers
@@ -163,7 +163,7 @@ class Document extends _react.Component {
         return(/*#__PURE__*/ _react.default.createElement(Html, null, /*#__PURE__*/ _react.default.createElement(Head, null), /*#__PURE__*/ _react.default.createElement("body", null, /*#__PURE__*/ _react.default.createElement(Main, null), /*#__PURE__*/ _react.default.createElement(NextScript, null))));
     }
 }
-exports.default = Document;
+exports.default = Document1;
 function Html(props) {
     const { inAmpMode , docComponentsRendered , locale  } = (0, _react).useContext(_utils.HtmlContext);
     docComponentsRendered.Html = true;
@@ -238,9 +238,9 @@ class Head extends _react.Component {
         })// Filter out nulled scripts
         .filter(Boolean);
     }
-    getPreloadMainLinks(files1) {
+    getPreloadMainLinks(files) {
         const { assetPrefix , devOnlyCacheBusterQueryString , scriptLoader  } = this.context;
-        const preloadFiles = files1.allFiles.filter((file)=>{
+        const preloadFiles = files.allFiles.filter((file)=>{
             return file.endsWith('.js');
         });
         return [
@@ -264,14 +264,14 @@ class Head extends _react.Component {
             ), 
         ];
     }
-    getDynamicChunks(files2) {
-        return getDynamicChunks(this.context, this.props, files2);
+    getDynamicChunks(files) {
+        return getDynamicChunks(this.context, this.props, files);
     }
     getPreNextScripts() {
         return getPreNextScripts(this.context, this.props);
     }
-    getScripts(files3) {
-        return getScripts(this.context, this.props, files3);
+    getScripts(files) {
+        return getScripts(this.context, this.props, files);
     }
     getPolyfillScripts() {
         return getPolyfillScripts(this.context, this.props);
@@ -402,8 +402,8 @@ class Head extends _react.Component {
         styles.props && // @ts-ignore Property 'props' does not exist on type ReactElement
         Array.isArray(styles.props.children)) {
             const hasStyles = (el)=>{
-                var ref, ref2;
-                return el === null || el === void 0 ? void 0 : (ref = el.props) === null || ref === void 0 ? void 0 : (ref2 = ref.dangerouslySetInnerHTML) === null || ref2 === void 0 ? void 0 : ref2.__html;
+                var ref2, ref3;
+                return el === null || el === void 0 ? void 0 : (ref2 = el.props) === null || ref2 === void 0 ? void 0 : (ref3 = ref2.dangerouslySetInnerHTML) === null || ref3 === void 0 ? void 0 : ref3.__html;
             };
             // @ts-ignore Property 'props' does not exist on type ReactElement
             styles.props.children.forEach((child)=>{
@@ -494,14 +494,14 @@ function Main() {
     }, _constants.BODY_RENDER_TARGET));
 }
 class NextScript extends _react.Component {
-    getDynamicChunks(files4) {
-        return getDynamicChunks(this.context, this.props, files4);
+    getDynamicChunks(files) {
+        return getDynamicChunks(this.context, this.props, files);
     }
     getPreNextScripts() {
         return getPreNextScripts(this.context, this.props);
     }
-    getScripts(files5) {
-        return getScripts(this.context, this.props, files5);
+    getScripts(files) {
+        return getScripts(this.context, this.props, files);
     }
     getPolyfillScripts() {
         return getPolyfillScripts(this.context, this.props);

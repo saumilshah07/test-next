@@ -51,8 +51,8 @@ function nextPageConfig({ types: t  }) {
                                     // import hello from 'world'
                                     // export { hello as config }
                                     } else if (_core.types.isIdentifier(specifier.local)) {
-                                        var ref2;
-                                        if (_core.types.isImportSpecifier((ref2 = exportPath.scope.getBinding(specifier.local.name)) === null || ref2 === void 0 ? void 0 : ref2.path.node)) {
+                                        var ref5;
+                                        if (_core.types.isImportSpecifier((ref5 = exportPath.scope.getBinding(specifier.local.name)) === null || ref5 === void 0 ? void 0 : ref5.path.node)) {
                                             throw new Error(errorMessage(exportState, `Expected object but got import`));
                                         }
                                     }
@@ -87,8 +87,8 @@ function nextPageConfig({ types: t  }) {
                                 }
                             }
                             if (config.amp === true) {
-                                var ref3, ref4;
-                                if (!((ref3 = exportState.file) === null || ref3 === void 0 ? void 0 : (ref4 = ref3.opts) === null || ref4 === void 0 ? void 0 : ref4.caller.isDev)) {
+                                var ref6, ref7;
+                                if (!((ref6 = exportState.file) === null || ref6 === void 0 ? void 0 : (ref7 = ref6.opts) === null || ref7 === void 0 ? void 0 : ref7.caller.isDev)) {
                                     // don't replace bundle in development so HMR can track
                                     // dependencies and trigger reload when they are changed
                                     replaceBundle(exportPath, t);

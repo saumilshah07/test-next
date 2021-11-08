@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = onDemandEntryHandler;
-exports.entries = exports.BUILT = exports.BUILDING = exports.ADDED = void 0;
+exports.entries = exports.BUILDING = exports.ADDED = exports.BUILT = void 0;
 var _events = require("events");
 var _path = require("path");
 var _url = require("url");
@@ -135,8 +135,8 @@ function onDemandEntryHandler(watcher, multiCompiler, { pagesDir , pageExtension
             let normalizedPagePath;
             try {
                 normalizedPagePath = (0, _normalizePagePath).normalizePagePath(page);
-            } catch (err1) {
-                console.error(err1);
+            } catch (err) {
+                console.error(err);
                 throw (0, _require).pageNotFoundError(page);
             }
             let pagePath = await (0, _findPageFile).findPageFile(pagesDir, normalizedPagePath, pageExtensions);

@@ -94,8 +94,8 @@ function buildManifest(_compiler, compilation, pagesDir) {
             }
         }
     };
-    for (const module1 of compilation.modules){
-        module1.blocks.forEach(handleBlock);
+    for (const module of compilation.modules){
+        module.blocks.forEach(handleBlock);
     }
     manifest = Object.keys(manifest).sort()// eslint-disable-next-line no-sequences
     .reduce((a, c)=>(a[c] = manifest[c], a)
@@ -108,28 +108,28 @@ class ReactLoadablePlugin {
         this.filename = opts.filename;
         this.pagesDir = opts.pagesDir;
     }
-    createAssets(compiler, compilation1, assets1) {
-        const manifest = buildManifest(compiler, compilation1, this.pagesDir);
+    createAssets(compiler, compilation, assets) {
+        const manifest = buildManifest(compiler, compilation, this.pagesDir);
         // @ts-ignore: TODO: remove when webpack 5 is stable
-        assets1[this.filename] = new _webpack.sources.RawSource(JSON.stringify(manifest, null, 2));
-        return assets1;
+        assets[this.filename] = new _webpack.sources.RawSource(JSON.stringify(manifest, null, 2));
+        return assets;
     }
-    apply(compiler1) {
+    apply(compiler) {
         if (_webpack.isWebpack5) {
-            compiler1.hooks.make.tap('ReactLoadableManifest', (compilation)=>{
+            compiler.hooks.make.tap('ReactLoadableManifest', (compilation)=>{
                 // @ts-ignore TODO: Remove ignore when webpack 5 is stable
                 compilation.hooks.processAssets.tap({
                     name: 'ReactLoadableManifest',
                     // @ts-ignore TODO: Remove ignore when webpack 5 is stable
                     stage: _webpack.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONS
                 }, (assets)=>{
-                    this.createAssets(compiler1, compilation, assets);
+                    this.createAssets(compiler, compilation, assets);
                 });
             });
             return;
         }
-        compiler1.hooks.emit.tap('ReactLoadableManifest', (compilation)=>{
-            this.createAssets(compiler1, compilation, compilation.assets);
+        compiler.hooks.emit.tap('ReactLoadableManifest', (compilation)=>{
+            this.createAssets(compiler, compilation, compilation.assets);
         });
     }
 }

@@ -16,8 +16,8 @@ class PagesManifestPlugin {
         this.serverless = serverless;
         this.dev = dev;
     }
-    createAssets(compilation1, assets1) {
-        const entrypoints = compilation1.entrypoints;
+    createAssets(compilation, assets) {
+        const entrypoints = compilation.entrypoints;
         const pages = {
         };
         for (const entrypoint of entrypoints.values()){
@@ -38,7 +38,7 @@ class PagesManifestPlugin {
             }
             pages[pagePath] = pages[pagePath].replace(/\\/g, '/');
         }
-        assets1[`${_webpack.isWebpack5 && !this.dev ? '../' : ''}` + _constants.PAGES_MANIFEST] = new _webpack.sources.RawSource(JSON.stringify(pages, null, 2));
+        assets[`${_webpack.isWebpack5 && !this.dev ? '../' : ''}` + _constants.PAGES_MANIFEST] = new _webpack.sources.RawSource(JSON.stringify(pages, null, 2));
     }
     apply(compiler) {
         if (_webpack.isWebpack5) {

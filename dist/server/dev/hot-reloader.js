@@ -410,7 +410,7 @@ class HotReloader {
         let booted = false;
         this.watcher = await new Promise((resolve)=>{
             const watcher = multiCompiler.watch(// @ts-ignore webpack supports an array of watchOptions when using a multiCompiler
-            configs.map((config)=>config.watchOptions
+            configs.map((config2)=>config2.watchOptions
             ), // Errors are handled separately
             (_err)=>{
                 if (!booted) {
@@ -483,15 +483,15 @@ class HotReloader {
             data: args
         });
     }
-    async ensurePage(page1) {
+    async ensurePage(page) {
         // Make sure we don't re-build or dispose prebuilt pages
-        if (page1 !== '/_error' && _constants1.BLOCKED_PAGES.indexOf(page1) !== -1) {
+        if (page !== '/_error' && _constants1.BLOCKED_PAGES.indexOf(page) !== -1) {
             return;
         }
         if (this.serverError || this.clientError) {
             return Promise.reject(this.serverError || this.clientError);
         }
-        return this.onDemandEntries.ensurePage(page1);
+        return this.onDemandEntries.ensurePage(page);
     }
 }
 exports.default = HotReloader;

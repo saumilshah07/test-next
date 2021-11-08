@@ -11,12 +11,12 @@ function _interopRequireDefault(obj) {
         default: obj
     };
 }
-var MessageSeverity1;
-exports.MessageSeverity = MessageSeverity1;
-(function(MessageSeverity) {
-    MessageSeverity[MessageSeverity["Warning"] = 1] = "Warning";
-    MessageSeverity[MessageSeverity["Error"] = 2] = "Error";
-})(MessageSeverity1 || (exports.MessageSeverity = MessageSeverity1 = {
+var MessageSeverity;
+exports.MessageSeverity = MessageSeverity;
+(function(MessageSeverity1) {
+    MessageSeverity1[MessageSeverity1["Warning"] = 1] = "Warning";
+    MessageSeverity1[MessageSeverity1["Error"] = 2] = "Error";
+})(MessageSeverity || (exports.MessageSeverity = MessageSeverity = {
 }));
 function pluginCount(messages) {
     let nextPluginWarningCount = 0;
@@ -24,7 +24,7 @@ function pluginCount(messages) {
     for(let i = 0; i < messages.length; i++){
         const { severity , ruleId  } = messages[i];
         if (ruleId === null || ruleId === void 0 ? void 0 : ruleId.includes('@next/next')) {
-            if (severity === MessageSeverity1.Warning) {
+            if (severity === MessageSeverity.Warning) {
                 nextPluginWarningCount += 1;
             } else {
                 nextPluginErrorCount += 1;
@@ -48,7 +48,7 @@ function formatMessage(dir, messages, filePath) {
         if (line && column) {
             output = output + _chalk.default.yellow(line.toString()) + ':' + _chalk.default.yellow(column.toString()) + '  ';
         }
-        if (severity === MessageSeverity1.Warning) {
+        if (severity === MessageSeverity.Warning) {
             output += _chalk.default.yellow.bold('Warning') + ': ';
         } else {
             output += _chalk.default.red.bold('Error') + ': ';

@@ -140,8 +140,8 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
         const eslintCacheDir = _path.default.join(cacheDir, 'eslint/');
         if (!ignoreESLint && runLint) {
             await nextBuildSpan.traceChild('verify-and-lint').traceAsyncFn(async ()=>{
-                var ref;
-                await (0, _verifyAndLint).verifyAndLint(dir, eslintCacheDir, (ref = config.eslint) === null || ref === void 0 ? void 0 : ref.dirs, config.experimental.cpus, config.experimental.workerThreads, telemetry);
+                var ref9;
+                await (0, _verifyAndLint).verifyAndLint(dir, eslintCacheDir, (ref9 = config.eslint) === null || ref9 === void 0 ? void 0 : ref9.dirs, config.experimental.cpus, config.experimental.workerThreads, telemetry);
             });
         }
         const buildSpinner = (0, _spinner).default({
@@ -465,7 +465,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
         });
         const analysisBegin = process.hrtime();
         const staticCheckSpan = nextBuildSpan.traceChild('static-check');
-        const { customAppGetInitialProps , namedExports , isNextImageImported: isNextImageImported1 , hasSsrAmpPages: hasSsrAmpPages1 , hasNonStaticErrorPage ,  } = await staticCheckSpan.traceAsyncFn(async ()=>{
+        const { customAppGetInitialProps , namedExports , isNextImageImported , hasSsrAmpPages , hasNonStaticErrorPage ,  } = await staticCheckSpan.traceAsyncFn(async ()=>{
             process.env.NEXT_PHASE = _constants1.PHASE_PRODUCTION_BUILD;
             const runtimeEnvConfig = {
                 publicRuntimeConfig: config.publicRuntimeConfig,
@@ -475,8 +475,8 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             const errorPageHasCustomGetInitialProps = nonStaticErrorPageSpan.traceAsyncFn(async ()=>hasCustomErrorPage && await staticWorkers.hasCustomGetInitialProps('/_error', distDir, isLikeServerless, runtimeEnvConfig, false)
             );
             const errorPageStaticResult = nonStaticErrorPageSpan.traceAsyncFn(async ()=>{
-                var ref, ref5;
-                return hasCustomErrorPage && staticWorkers.isPageStatic('/_error', distDir, isLikeServerless, runtimeEnvConfig, config.httpAgentOptions, (ref = config.i18n) === null || ref === void 0 ? void 0 : ref.locales, (ref5 = config.i18n) === null || ref5 === void 0 ? void 0 : ref5.defaultLocale);
+                var ref10, ref11;
+                return hasCustomErrorPage && staticWorkers.isPageStatic('/_error', distDir, isLikeServerless, runtimeEnvConfig, config.httpAgentOptions, (ref10 = config.i18n) === null || ref10 === void 0 ? void 0 : ref10.locales, (ref11 = config.i18n) === null || ref11 === void 0 ? void 0 : ref11.defaultLocale);
             });
             // we don't output _app in serverless mode so use _app export
             // from _error instead
@@ -484,9 +484,9 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             const customAppGetInitialPropsPromise = staticWorkers.hasCustomGetInitialProps(appPageToCheck, distDir, isLikeServerless, runtimeEnvConfig, true);
             const namedExportsPromise = staticWorkers.getNamedExports(appPageToCheck, distDir, isLikeServerless, runtimeEnvConfig);
             // eslint-disable-next-line no-shadow
-            let isNextImageImported;
+            let isNextImageImported1;
             // eslint-disable-next-line no-shadow
-            let hasSsrAmpPages = false;
+            let hasSsrAmpPages1 = false;
             const computedManifestData = await (0, _utils1).computeFromManifest(buildManifest, distDir, config.experimental.gzipSize);
             await Promise.all(pageKeys.map(async (page)=>{
                 const checkPageSpan = staticCheckSpan.traceChild('check-page', {
@@ -504,22 +504,22 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
                         try {
                             let isPageStaticSpan = checkPageSpan.traceChild('is-page-static');
                             let workerResult = await isPageStaticSpan.traceAsyncFn(()=>{
-                                var ref, ref6;
-                                return staticWorkers.isPageStatic(page, distDir, isLikeServerless, runtimeEnvConfig, config.httpAgentOptions, (ref = config.i18n) === null || ref === void 0 ? void 0 : ref.locales, (ref6 = config.i18n) === null || ref6 === void 0 ? void 0 : ref6.defaultLocale, isPageStaticSpan.id);
+                                var ref12, ref13;
+                                return staticWorkers.isPageStatic(page, distDir, isLikeServerless, runtimeEnvConfig, config.httpAgentOptions, (ref12 = config.i18n) === null || ref12 === void 0 ? void 0 : ref12.locales, (ref13 = config.i18n) === null || ref13 === void 0 ? void 0 : ref13.defaultLocale, isPageStaticSpan.id);
                             });
                             if (config.experimental.nftTracing) {
                                 pageTraceIncludes.set(page, workerResult.traceIncludes || []);
                                 pageTraceExcludes.set(page, workerResult.traceExcludes || []);
                             }
                             if (workerResult.isStatic === false && (workerResult.isHybridAmp || workerResult.isAmpOnly)) {
-                                hasSsrAmpPages = true;
+                                hasSsrAmpPages1 = true;
                             }
                             if (workerResult.isHybridAmp) {
                                 isHybridAmp = true;
                                 hybridAmpPages.add(page);
                             }
                             if (workerResult.isNextImageImported) {
-                                isNextImageImported = true;
+                                isNextImageImported1 = true;
                             }
                             if (workerResult.hasStaticProps) {
                                 ssgPages.add(page);
@@ -576,8 +576,8 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             const returnValue = {
                 customAppGetInitialProps: await customAppGetInitialPropsPromise,
                 namedExports: await namedExportsPromise,
-                isNextImageImported,
-                hasSsrAmpPages,
+                isNextImageImported: isNextImageImported1,
+                hasSsrAmpPages: hasSsrAmpPages1,
                 hasNonStaticErrorPage: nonStaticErrorPage
             };
             if (!sharedPool) staticWorkers.end();
@@ -587,7 +587,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             console.warn(_chalk.default.bold.yellow(`Warning: `) + _chalk.default.yellow(`You have opted-out of Automatic Static Optimization due to \`getInitialProps\` in \`pages/_app\`. This does not opt-out pages with \`getStaticProps\``));
             console.warn('Read more: https://nextjs.org/docs/messages/opt-out-auto-static-optimization\n');
         }
-        if (!hasSsrAmpPages1) {
+        if (!hasSsrAmpPages) {
             requiredServerFiles.ignore.push(_path.default.relative(dir, _path.default.join(_path.default.dirname(require.resolve('next/dist/compiled/@ampproject/toolbox-optimizer')), '**/*')));
         }
         if (config.experimental.nftTracing) {
@@ -807,12 +807,12 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
                                 const isDynamic = (0, _utils).isDynamicRoute(page);
                                 const isFallback = isSsg && ssgStaticFallbackPages.has(page);
                                 for (const locale of i18n.locales){
-                                    var ref;
+                                    var ref14;
                                     // skip fallback generation for SSG pages without fallback mode
                                     if (isSsg && isDynamic && !isFallback) continue;
                                     const outputPath = `/${locale}${page === '/' ? '' : page}`;
                                     defaultMap[outputPath] = {
-                                        page: ((ref = defaultMap[page]) === null || ref === void 0 ? void 0 : ref.page) || page,
+                                        page: ((ref14 = defaultMap[page]) === null || ref14 === void 0 ? void 0 : ref14.page) || page,
                                         query: {
                                             __nextLocale: locale
                                         }
@@ -836,12 +836,12 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
                 });
                 ssgNotFoundPaths = exportConfig.ssgNotFoundPaths;
                 // remove server bundles that were exported
-                for (const page2 of staticPages){
-                    const serverBundle = (0, _require).getPagePath(page2, distDir, isLikeServerless);
+                for (const page of staticPages){
+                    const serverBundle = (0, _require).getPagePath(page, distDir, isLikeServerless);
                     await _fs.promises.unlink(serverBundle);
                 }
                 const serverOutputDir = _path.default.join(distDir, isLikeServerless ? _constants1.SERVERLESS_DIRECTORY : _constants1.SERVER_DIRECTORY);
-                const moveExportedPage = async (originPage, page, file, isSsg, ext, additionalSsgFile = false)=>{
+                const moveExportedPage = async (originPage, page1, file, isSsg, ext, additionalSsgFile = false)=>{
                     return staticGenerationSpan.traceChild('move-exported-page').traceAsyncFn(async ()=>{
                         file = `${file}.${ext}`;
                         const orig = _path.default.join(exportOptions.outdir, file);
@@ -853,10 +853,10 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
                         const dest = _path.default.join(distDir, isLikeServerless ? _constants1.SERVERLESS_DIRECTORY : _constants1.SERVER_DIRECTORY, relativeDest);
                         if (!isSsg && !// don't add static status page to manifest if it's
                         // the default generated version e.g. no pages/500
-                        (_constants1.STATIC_STATUS_PAGES.includes(page) && !usedStaticStatusPages.includes(page))) {
-                            pagesManifest[page] = relativeDest;
+                        (_constants1.STATIC_STATUS_PAGES.includes(page1) && !usedStaticStatusPages.includes(page1))) {
+                            pagesManifest[page1] = relativeDest;
                         }
-                        const isNotFound = ssgNotFoundPaths.includes(page);
+                        const isNotFound = ssgNotFoundPaths.includes(page1);
                         // for SSG files with i18n the non-prerendered variants are
                         // output with the locale prefixed so don't attempt moving
                         // without the prefix
@@ -868,21 +868,21 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
                         } else if (i18n && !isSsg) {
                             // this will be updated with the locale prefixed variant
                             // since all files are output with the locale prefix
-                            delete pagesManifest[page];
+                            delete pagesManifest[page1];
                         }
                         if (i18n) {
                             if (additionalSsgFile) return;
                             for (const locale of i18n.locales){
-                                const curPath = `/${locale}${page === '/' ? '' : page}`;
-                                const localeExt = page === '/' ? _path.default.extname(file) : '';
+                                const curPath = `/${locale}${page1 === '/' ? '' : page1}`;
+                                const localeExt = page1 === '/' ? _path.default.extname(file) : '';
                                 const relativeDestNoPages = relativeDest.substr('pages/'.length);
                                 if (isSsg && ssgNotFoundPaths.includes(curPath)) {
                                     continue;
                                 }
                                 const updatedRelativeDest = _path.default.join('pages', locale + localeExt, // if it's the top-most index page we want it to be locale.EXT
                                 // instead of locale/index.html
-                                page === '/' ? '' : relativeDestNoPages).replace(/\\/g, '/');
-                                const updatedOrig = _path.default.join(exportOptions.outdir, locale + localeExt, page === '/' ? '' : file);
+                                page1 === '/' ? '' : relativeDestNoPages).replace(/\\/g, '/');
+                                const updatedOrig = _path.default.join(exportOptions.outdir, locale + localeExt, page1 === '/' ? '' : file);
                                 const updatedDest = _path.default.join(distDir, isLikeServerless ? _constants1.SERVERLESS_DIRECTORY : _constants1.SERVER_DIRECTORY, updatedRelativeDest);
                                 if (!isSsg) {
                                     pagesManifest[curPath] = updatedRelativeDest;
@@ -997,7 +997,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             });
         }
         const analysisEnd = process.hrtime(analysisBegin);
-        var ref3;
+        var ref15;
         telemetry.record((0, _events).eventBuildOptimize(pagePaths, {
             durationInSeconds: analysisEnd[0],
             staticPageCount: staticPages.size,
@@ -1005,7 +1005,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             serverPropsPageCount: serverPropsPages.size,
             ssrPageCount: pagePaths.length - (staticPages.size + ssgPages.size + serverPropsPages.size),
             hasStatic404: useStatic404,
-            hasReportWebVitals: (ref3 = namedExports === null || namedExports === void 0 ? void 0 : namedExports.includes('reportWebVitals')) !== null && ref3 !== void 0 ? ref3 : false,
+            hasReportWebVitals: (ref15 = namedExports === null || namedExports === void 0 ? void 0 : namedExports.includes('reportWebVitals')) !== null && ref15 !== void 0 ? ref15 : false,
             rewritesCount: combinedRewrites.length,
             headersCount: headers.length,
             redirectsCount: redirects.length - 1,
@@ -1017,7 +1017,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             ).length
         }));
         if (ssgPages.size > 0) {
-            var ref4;
+            var ref16;
             const finalDynamicRoutes = {
             };
             tbdPrerenderRoutes.forEach((tbdRoute)=>{
@@ -1041,7 +1041,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             await generateClientSsgManifest(prerenderManifest, {
                 distDir,
                 buildId,
-                locales: ((ref4 = config.i18n) === null || ref4 === void 0 ? void 0 : ref4.locales) || []
+                locales: ((ref16 = config.i18n) === null || ref16 === void 0 ? void 0 : ref16.locales) || []
             });
         } else {
             const prerenderManifest = {
@@ -1071,7 +1071,7 @@ async function build(dir, conf = null, reactProductionProfiling = false, debugOu
             version: 1,
             hasExportPathMap: typeof config.exportPathMap === 'function',
             exportTrailingSlash: config.trailingSlash === true,
-            isNextImageImported: isNextImageImported1 === true
+            isNextImageImported: isNextImageImported === true
         }), 'utf8');
         await _fs.promises.unlink(_path.default.join(distDir, _constants1.EXPORT_DETAIL)).catch((err)=>{
             if (err.code === 'ENOENT') {
