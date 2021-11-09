@@ -404,7 +404,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 console.log('image optimizer optimizedBuffer expireAt', expireAt);
                 console.log('image optimizer optimizedBuffer req', req);
                 console.log('image optimizer optimizedBuffer res', res);
-                // await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
+                await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
                 sendResponse(req, res, url, maxAge, contentType, optimizedBuffer, isStatic, isDev);
             } else {
                 throw new Error('Unable to optimize buffer');
