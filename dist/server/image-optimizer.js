@@ -423,6 +423,10 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
     }
 }
 async function writeToCacheDir(dir, contentType, maxAge, expireAt, buffer) {
+    console.log('writeToCacheDir dir', dir);
+    console.log('writeToCacheDir maxAge', maxAge);
+    console.log('writeToCacheDir expireAt', expireAt);
+    console.log('writeToCacheDir contentType', contentType);
     await _fs.promises.mkdir(dir, {
         recursive: true
     });
@@ -570,18 +574,23 @@ function detectContentType(buffer) {
     return null;
 }
 function getMaxAge(str) {
+    console.log('getMaxAge', str);
     const map = parseCacheControl(str);
     if (map) {
         let age = map.get('s-maxage') || map.get('max-age') || '';
         if (age.startsWith('"') && age.endsWith('"')) {
             age = age.slice(1, -1);
         }
+        console.log('getMaxAge s-maxage', map.get('s-maxage'));
+        console.log('getMaxAge max-age', map.get('max-age'));
         const n = parseInt(age, 10);
+        console.log('getMaxAge n', n);
         if (!isNaN(n)) {
+            console.log('getMaxAge n', n);
             return n;
         }
     }
-    return 0;
+    return 1800;
 }
 async function resizeImage(content, dimension, size, extension, quality) {
     if (sharp) {
