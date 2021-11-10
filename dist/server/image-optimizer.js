@@ -449,8 +449,8 @@ function getFileNameWithExtension(url, contentType) {
     return `${fileName}.${extension}`;
 }
 function setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, isDev) {
-    res.setHeader('Vary', 'Accept');
-    res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : maxAge}, must-revalidate`);
+    res.setHeader('Vary', 'Origin');
+    // res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : maxAge}, must-revalidate`);
     if ((0, _sendPayload).sendEtagResponse(req, res, etag)) {
         // already called res.end() so we're finished
         return {
