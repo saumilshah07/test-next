@@ -184,7 +184,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
         quality,
         mimeType
     ]);
-    const imagesDir = (0, _path).join(distDir, 'cache', 'images');
+    const imagesDir = (0, _path).join('/tmp', 'cache', 'images');
     const hashDir = (0, _path).join(imagesDir, hash);
     const now = Date.now();
     // If there're concurrent requests hitting the same resource and it's still
