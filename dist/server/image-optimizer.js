@@ -410,7 +410,16 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 throw new Error('Unable to optimize buffer');
             }
         } catch (error) {
+            console.log('image optimizer error isStatic', isStatic);
+            console.log('image optimizer error isDev', isDev);
+            console.log('image optimizer error maxAge', maxAge);
+            console.log('image optimizer error expireAt', expireAt);
+            console.log('image optimizer error req', req);
+            console.log('image optimizer error res', res);
             console.log('image optimizer error', error);
+            console.log('image optimizer error', url);
+            console.log('image optimizer error', upstreamType);
+            console.log('image optimizer error', upstreamBuffer);
             sendResponse(req, res, url, maxAge, upstreamType, upstreamBuffer, isStatic, isDev);
         }
         return {
