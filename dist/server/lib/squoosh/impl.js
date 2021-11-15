@@ -87,8 +87,6 @@ async function encodeWebp(image, { quality  }) {
     const e = _codecs.codecs['webp'];
     const m = await e.enc();
     await maybeDelay();
-    console.log('image optimizer encodeWebp quality', image);
-    console.log('image optimizer encodeWebp quality', quality);
     const r = await m.encode(image.data, image.width, image.height, {
         ...e.defaultEncoderOptions,
         quality

@@ -459,12 +459,6 @@ class Server {
                         };
                     }
                     const { imageOptimizer  } = require('./image-optimizer');
-                    console.log('root server',server);
-                    console.log('root parsedUrl',parsedUrl);
-                    console.log('root nextConfig',server.nextConfig);
-                    console.log('root distDir',server.distDir);
-                    console.log('root renderOpts.dev',this.renderOpts.dev);
-
                     return imageOptimizer(server, req, res, parsedUrl, server.nextConfig, server.distDir, this.renderOpts.dev);
                 }
             },

@@ -64,12 +64,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
     }
     const { headers  } = req;
     const { url , w , q  } = parsedUrl.query;
-    console.log('image optimizer url', url);
-    console.log('image optimizer w', w);
-    console.log('image optimizer q', q);
     const mimeType = getSupportedMimeType(MODERN_TYPES, headers.accept);
-    console.log('image optimizer headers.accept', headers.accept);
-    console.log('image optimizer mimeType', mimeType);
     let href;
     if (!url) {
         res.statusCode = 400;
@@ -184,7 +179,7 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
         quality,
         mimeType
     ]);
-    const imagesDir = (0, _path).join('/tmp', 'cache', 'images');
+    const imagesDir = (0, _path).join(distDir, 'cache', 'images');
     const hashDir = (0, _path).join(imagesDir, hash);
     const now = Date.now();
     // If there're concurrent requests hitting the same resource and it's still
@@ -355,7 +350,6 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 }
                 // Begin Squoosh transformation logic
                 const orientation = await (0, _getOrientation).getOrientation(upstreamBuffer);
-                console.log('image optimizer orientation', orientation);
                 const operations = [];
                 if (orientation === _getOrientation.Orientation.RIGHT_TOP) {
                     operations.push({
@@ -383,7 +377,6 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 });
                 //if (contentType === AVIF) {
                 //} else
-                console.log('image optimizer contentType', contentType);
                 if (contentType === WEBP) {
                     optimizedBuffer = await (0, _main).processBuffer(upstreamBuffer, operations, 'webp', quality);
                 } else if (contentType === PNG) {
@@ -392,34 +385,15 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                     optimizedBuffer = await (0, _main).processBuffer(upstreamBuffer, operations, 'jpeg', quality);
                 }
             // End Squoosh transformation logic
-                console.log('image optimizer optimizedBuffer url', url);
-                console.log('image optimizer optimizedBuffer res', res);
-                console.log('image optimizer optimizedBuffer optimizedBuffer', optimizedBuffer);
             }
             if (optimizedBuffer) {
-                console.log('image optimizer optimizedBuffer hashDir', hashDir);
-                console.log('image optimizer optimizedBuffer isStatic', isStatic);
-                console.log('image optimizer optimizedBuffer isDev', isDev);
-                console.log('image optimizer optimizedBuffer maxAge', maxAge);
-                console.log('image optimizer optimizedBuffer expireAt', expireAt);
-                console.log('image optimizer optimizedBuffer req', req);
-                console.log('image optimizer optimizedBuffer res', res);
                 await writeToCacheDir(hashDir, contentType, maxAge, expireAt, optimizedBuffer);
                 sendResponse(req, res, url, maxAge, contentType, optimizedBuffer, isStatic, isDev);
             } else {
                 throw new Error('Unable to optimize buffer');
             }
         } catch (error) {
-            console.log('image optimizer error isStatic', isStatic);
-            console.log('image optimizer error isDev', isDev);
-            console.log('image optimizer error maxAge', maxAge);
-            console.log('image optimizer error expireAt', expireAt);
-            console.log('image optimizer error req', req);
-            console.log('image optimizer error res', res);
-            console.log('image optimizer error', error);
-            console.log('image optimizer error', url);
-            console.log('image optimizer error', upstreamType);
-            console.log('image optimizer error', upstreamBuffer);
+            console.log('error', error);
             sendResponse(req, res, url, maxAge, upstreamType, upstreamBuffer, isStatic, isDev);
         }
         return {
@@ -432,10 +406,6 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
     }
 }
 async function writeToCacheDir(dir, contentType, maxAge, expireAt, buffer) {
-    console.log('writeToCacheDir dir', dir);
-    console.log('writeToCacheDir maxAge', maxAge);
-    console.log('writeToCacheDir expireAt', expireAt);
-    console.log('writeToCacheDir contentType', contentType);
     await _fs.promises.mkdir(dir, {
         recursive: true
     });
@@ -444,7 +414,6 @@ async function writeToCacheDir(dir, contentType, maxAge, expireAt, buffer) {
         buffer
     ]);
     const filename = (0, _path).join(dir, `${maxAge}.${expireAt}.${etag}.${extension}`);
-    console.log('writeToCacheDir filename', filename);
     await _fs.promises.writeFile(filename, buffer);
 }
 function getFileNameWithExtension(url, contentType) {
@@ -458,8 +427,8 @@ function getFileNameWithExtension(url, contentType) {
     return `${fileName}.${extension}`;
 }
 function setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, isDev) {
-    res.setHeader('Vary', 'Origin');
-    // res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : maxAge}, must-revalidate`);
+    res.setHeader('Vary', 'Accept');
+    res.setHeader('Cache-Control', isStatic ? 'public, max-age=315360000, immutable' : `public, max-age=${isDev ? 0 : maxAge}, must-revalidate`);
     if ((0, _sendPayload).sendEtagResponse(req, res, etag)) {
         // already called res.end() so we're finished
         return {
@@ -467,12 +436,9 @@ function setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, 
         };
     }
     if (contentType) {
-        console.log('setResponseHeaders contentType', contentType);
         res.setHeader('Content-Type', contentType);
     }
-    console.log('setResponseHeaders url', url);
     const fileName = getFileNameWithExtension(url, contentType);
-    console.log('setResponseHeaders fileName', fileName);
     if (fileName) {
         res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
     }
@@ -485,8 +451,6 @@ function sendResponse(req, res, url, maxAge, contentType, buffer, isStatic, isDe
     const etag = getHash([
         buffer
     ]);
-    console.log('sendResponse etag', etag);
-
     const result = setResponseHeaders(req, res, url, etag, maxAge, contentType, isStatic, isDev);
     if (!result.finished) {
         res.end(buffer);
@@ -583,23 +547,18 @@ function detectContentType(buffer) {
     return null;
 }
 function getMaxAge(str) {
-    console.log('getMaxAge', str);
     const map = parseCacheControl(str);
     if (map) {
         let age = map.get('s-maxage') || map.get('max-age') || '';
         if (age.startsWith('"') && age.endsWith('"')) {
             age = age.slice(1, -1);
         }
-        console.log('getMaxAge s-maxage', map.get('s-maxage'));
-        console.log('getMaxAge max-age', map.get('max-age'));
         const n = parseInt(age, 10);
-        console.log('getMaxAge n', n);
         if (!isNaN(n)) {
-            console.log('getMaxAge n', n);
             return n;
         }
     }
-    return 1800;
+    return 0;
 }
 async function resizeImage(content, dimension, size, extension, quality) {
     if (sharp) {
