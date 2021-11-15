@@ -82,7 +82,10 @@ class Server {
         this.quiet = quiet;
         (0, _env).loadEnvConfig(this.dir, dev, Log);
         this.nextConfig = conf;
+        console.log('this.dir', this.dir);
+        console.log('this.nextConfig.distDir', this.nextConfig.distDir);
         this.distDir = (0, _path).join(this.dir, this.nextConfig.distDir);
+        console.log('distDir', distDir);
         this.publicDir = (0, _path).join(this.dir, _constants.CLIENT_PUBLIC_FILES_PATH);
         this.hasStaticDir = !minimalMode && _fs.default.existsSync((0, _path).join(this.dir, 'static'));
         // Only serverRuntimeConfig needs the default
