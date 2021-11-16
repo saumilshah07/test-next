@@ -393,7 +393,6 @@ async function imageOptimizer(server, req, res, parsedUrl, nextConfig, distDir, 
                 throw new Error('Unable to optimize buffer');
             }
         } catch (error) {
-            console.log('error', error);
             sendResponse(req, res, url, maxAge, upstreamType, upstreamBuffer, isStatic, isDev);
         }
         return {
